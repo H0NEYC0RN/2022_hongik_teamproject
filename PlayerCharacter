@@ -1,48 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public bool isHided;
 
-    // Start is called before the first frame update
     void Start()
     {
         isHided = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        HideCheck();
+
         Hide();
+        Hide_check();
 
     }
 
-    void HideCheck()
+    // 캐릭터가 Hide 상태인지 확인
+    // 임시로 E / R을 통해 Hide 상태로 변환하게 뒀음!
+    // 상호작용 구현시 여기 수정하면 될거에요~
+    void Hide_check()
     {
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("e");
             isHided = true;
         }
-        else
+        if (Input.GetKeyDown(KeyCode.R))
+        //else
         {
+            Debug.Log("pl");
             isHided = false;
-        }   
+        }
     }
 
+    // 캐릭터가 Hide 상태일때 캐릭터의 tag를 변경해 Enemy가 추적하지 못하게 함
     void Hide()
     {
-
-        if (isHided = true)
+        if (isHided == true)
         {
-            this.tag = "Hided";
+            this.tag = "Hide";
         }
         else
         {
             this.tag = "Player";
+        }
+    }
+
+    // Enemy에게 붙잡히면(닿으면) 게임오버 화면 출력
+    private void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Enemy")
+        {
+            SceneManager.LoadScene("Gameover");
         }
     }
 }
