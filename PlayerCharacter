@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public bool isHided;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        isHided = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        HideCheck();
+        Hide();
+
+    }
+
+    void HideCheck()
+    {
+        if (Input.GetKey(KeyCode.E))
+        {
+            Debug.Log("e");
+            isHided = true;
+        }
+        else
+        {
+            isHided = false;
+        }   
+    }
+
+    void Hide()
+    {
+
+        if (isHided = true)
+        {
+            this.tag = "Hided";
+        }
+        else
+        {
+            this.tag = "Player";
+        }
+    }
+}
