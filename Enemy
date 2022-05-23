@@ -9,15 +9,68 @@ public class Enemy : MonoBehaviour
     public float Enemy_Run = 2;
 
     private Vector3 Target_Pos;
+    public Vector3 Pos_offset;
+
+    // 경로 이동
+    public Vector3[] WayPoints;
+    private Vector3 POS_Now;
+    private int WayPoint_Index = 0;
+
+    public bool isChasing;
+
+
+
+
+    private void Start()
+    {
+        isChasing = false;
+        WayPoints = new Vector3[2];
+        //이동 경로 배열에 값 할당
+        WayPoints.SetValue(new Vector3(3.75f, 0, 4.2f), 0);
+        WayPoints.SetValue(new Vector3(-3.65f, 0, 4.2f), 1);
+    }
+
+    private void Update()
+    {
+        //추적 상태가 아닐때, Enemy가 지정된 경로를 따라 이동함
+        if (isChasing == false)
+        {
+            POS_Now = transform.position;
+
+            if (WayPoint_Index < WayPoints.Length)
+            {
+                float walking = Enemy_Walk * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(POS_Now, WayPoints[WayPoint_Index], walking);
+                
+                //현재 위치 = 이동 지점 위치면, 인덱스에 +1 하여 다음 포인트로 이동
+                if(Vector3.Distance (WayPoints [WayPoint_Index], POS_Now) == 0f)
+                {
+                    WayPoint_Index ++ ;
+                }
+            }
+
+        }
+    }
+
+
 
     private void OnTriggerStay(Collider other)
     {
         //Player가 탐사범위 Coliider(Trigger)에 들어왔을 때, Enemy와 탐사범위가 Player의 방향으로 회전 및 이동
         if (other.tag == "Player")
         {
+            isChasing = true;
             Target_Pos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
             transform.LookAt(Target_Pos);
             this.transform.position = Vector3.MoveTowards(this.transform.position, Target_Pos, Enemy_Run * Time.deltaTime);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isChasing = false;
         }
     }
 }
