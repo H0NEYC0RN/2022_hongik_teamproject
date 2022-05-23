@@ -1,0 +1,23 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+    // 적 움직임 속도 설정
+    public float Enemy_Walk = 1;
+    public float Enemy_Run = 2;
+
+    private Vector3 Target_Pos;
+
+    private void OnTriggerStay(Collider other)
+    {
+        //Player가 탐사범위 Coliider(Trigger)에 들어왔을 때, Enemy와 탐사범위가 Player의 방향으로 회전 및 이동
+        if (other.tag == "Player")
+        {
+            Target_Pos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
+            transform.LookAt(Target_Pos);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, Target_Pos, Enemy_Run * Time.deltaTime);
+        }
+    }
+}
