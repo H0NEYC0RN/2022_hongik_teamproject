@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Event_Sys : MonoBehaviour
+{
+
+    public GameObject ESC_UI;
+    public Text ESC_text;
+
+    public GameObject PL;
+
+
+    void Start()
+    {
+        ESC_text.text = "";
+    }
+
+    void Update()
+    {
+        ESC();
+    }
+
+    // ESC를 눌렀을 때, ESC_UI출력 및 Player의 Event_Count에 따라 텍스트 내용 출력
+    // 가져오고 싶은 함수로 변경해서 출력값 변경하면 됨.
+    void ESC()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            ESC_UI.SetActive(true);
+            if (PL.GetComponent<Player_state>().Event_count == 1)
+            {
+                ESC_text.text = "Event Count = 1";
+            }
+            if (PL.GetComponent<Player_state>().Event_count == 2)
+            {
+                ESC_text.text = "Event Count = 2";
+            }
+            if (PL.GetComponent<Player_state>().Event_count >= 3)
+            {
+                ESC_text.text = "Event Count = 3";
+            }
+        }
+        else
+        {
+            ESC_UI.SetActive(false);
+            ESC_text.text = "";
+        }
+    }
+
+}
