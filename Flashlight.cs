@@ -1,39 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Flashlight : MonoBehaviour
 {
-    // Ä³¸¯ÅÍÇÑÅ× Àû¿ëÇØ¾ßÇÏ´Â ½ºÅ©¸³Æ®! ÀÌÈÄ¿¡ ½ºÅ©¸³Æ® inspector¿¡ ¼ÕÀüµî ¿ÀºêÁ§Æ® ³Ö¾îÁÖ±â
+    // ìºë¦­í„°í•œí…Œ ì ìš©í•´ì•¼í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸! ì´í›„ì— ìŠ¤í¬ë¦½íŠ¸ inspectorì— ì†ì „ë“± ì˜¤ë¸Œì íŠ¸ ë„£ì–´ì£¼ê¸°
 
-    [SerializeField] GameObject FlashlightLight;
-    private bool FlashlightActive = false; //off »óÅÂ°¡ ±âº»
+    public GameObject FlashlightLight;
+    private bool FlashlightActive = false; //off ìƒíƒœê°€ ê¸°ë³¸
 
+    // ë°°í„°ë¦¬ ì”ëŸ‰ í‘œì‹œë¥¼ ìœ„í•œ ì½”ë“œ
+    public float LimitTime;
+    public Text text_Timer; // TMP ë§ê³  ê·¸ëƒ¥ Text ê°€ì ¸ì™€ì•¼í•¨
 
     // Start is called before the first frame update
     void Start()
     {
-        FlashlightLight.gameObject.SetActive(false); // ½ÃÀÛ ½Ã¿¡ off »óÅÂ(onÀ¸·Î ÇÏ·Á¸é true·Î)
+        text_Timer.text = " 1000 / " + Mathf.Round(LimitTime);
+
+        FlashlightLight.gameObject.SetActive(false); // ì‹œì‘ ì‹œì— off ìƒíƒœ(onìœ¼ë¡œ í•˜ë ¤ë©´ trueë¡œ)
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F)) // FÅ° ´­·¯¼­ ÀÛµ¿
+        if(Input.GetKeyDown(KeyCode.F)) // Fí‚¤ ëˆŒëŸ¬ì„œ ì‘ë™
         {
-            if(FlashlightActive == false) //¼ÕÀüµîÀÌ ²¨Áø »óÅÂÀÏ °æ¿ì
+            if(FlashlightActive == false) //ì†ì „ë“±ì´ êº¼ì§„ ìƒíƒœì¼ ê²½ìš°
             {
                 Debug.Log("FlashLight ON");
                 FlashlightLight.gameObject.SetActive(true);
                 FlashlightActive = true;
             }
 
-            else  // ¼ÕÀüµîÀÌ ÄÑÁ®ÀÖ´Â »óÅÂÀÏ ¶§
+            else  // ì†ì „ë“±ì´ ì¼œì ¸ìˆëŠ” ìƒíƒœì¼ ë•Œ
             {
                 Debug.Log("FlashLight OFF");
                 FlashlightLight.gameObject.SetActive(false);
                 FlashlightActive = false;
             }
+        }
+
+        while(FlashlightActive == true) // ì†ì „ë“±ì´ ì¼œì§„ ìƒíƒœì¼ ë•Œë§Œ
+        {
+            text_Timer.text = " 1000 / " + Mathf.Round(LimitTime);
+
+            if (Mathf.Round(LimitTime) > 0.0f)
+            {
+                LimitTime -= Time.deltaTime; // ë§¤ ì´ˆë§ˆë‹¤ ë°°í„°ë¦¬ê°€ ì¤„ì–´ë“¦
+            }
+            else //ë°°í„°ë¦¬ê°€ ë°©ì „ëì„ ê²½ìš°
+            {
+                Debug.Log("Low Battery");
+                FlashlightLight.gameObject.SetActive(false);
+                FlashlightActive = false;
+            }
+            
+            break;
         }
     }
 }
