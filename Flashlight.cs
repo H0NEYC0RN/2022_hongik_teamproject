@@ -13,6 +13,10 @@ public class Flashlight : MonoBehaviour
     // 배터리 잔량 표시를 위한 코드
     public float LimitTime;
     public Text text_Timer; // TMP 말고 그냥 Text 가져와야함
+    
+    private bool ChargeActive = false;
+
+    bool isHaveBattery = false; // 보조 배터리를 줍기 전이라서 false라고 적었음
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +24,7 @@ public class Flashlight : MonoBehaviour
         text_Timer.text = " 1000 / " + Mathf.Round(LimitTime);
 
         FlashlightLight.gameObject.SetActive(false); // 시작 시에 off 상태(on으로 하려면 true로)
+        ChargeActive = false;
     }
 
     // Update is called once per frame
@@ -57,6 +62,39 @@ public class Flashlight : MonoBehaviour
                 FlashlightActive = false;
             }
             
+            break;
+        }
+        
+        // 보조 배터리 작동
+        if (isHaveBattery = true && Input.GetKeyDown(KeyCode.B)) // B키 눌러서 작동
+        {
+            if (ChargeActive == false) //보조 배터리 사용 안하는 경우
+            {
+                Debug.Log("Start Charging");
+                ChargeActive = true;
+            }
+
+            else  // 보조 배터리 사용 중일 경우
+            {
+                Debug.Log("Stop Charging");
+                ChargeActive = false;
+            }
+        }
+
+        while (ChargeActive == true) // 손전등이 켜진 상태일 때만
+        {
+            text_Timer.text = " 1000 / " + Mathf.Round(LimitTime);
+
+            if (Mathf.Round(LimitTime) < 1000.0f)
+            {
+                LimitTime += Time.deltaTime; // 매 초마다 충전
+            }
+            else //배터리가 충전 완료됐을 경우
+            {
+                Debug.Log("Full Battery");
+                ChargeActive = false;
+            }
+
             break;
         }
     }
