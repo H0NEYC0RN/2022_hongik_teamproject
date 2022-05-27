@@ -3,29 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player_state : MonoBehaviour
 {
     private bool isHided;
+    private bool isEvented;
     [SerializeField] GameObject Hide_ON;
     [SerializeField] GameObject Event_ON;
-
-
+    public int Event_count;
+    
     void Start()
     {
         isHided = false;
         Event_ON.SetActive(false);
         Hide_ON.SetActive(false);
+
+        Event_count = 0;
     }
 
     void Update()
     {
-
         Hide();
         Hide_check();
+
+        if (isEvented == true)
+        {
+            if (Input.GetKeyUp(KeyCode.E))
+            {
+                Event_count++;
+            }
+        }
     }
 
     // Player의 Hide 여부 체크
-    void HideCheck()
+    void Hide_check()
     {
         if (Input.GetKeyUp(KeyCode.W))
         {
@@ -36,7 +46,7 @@ public class Player : MonoBehaviour
         {
             isHided = false;
             Hide_ON.SetActive(false);
-        }   
+        }
     }
 
     // 캐릭터가 Hide 상태일때 캐릭터의 tag를 변경해 Enemy가 추적하지 못하게 함
@@ -60,18 +70,14 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene("Gameover");
         }
     }
-    
+
     // Player 가 Event 의 범위 안에 들어왔을 때, 이벤트 사용 가능 여부 UI 표시
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Event")
         {
             Event_ON.SetActive(true);
-            if (Input.GetKeyUp(KeyCode.E))
-            {
-                Debug.Log("Event ON");
-            }
+            isEvented = true;
         }
     }
-    
 }
