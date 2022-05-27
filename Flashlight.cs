@@ -5,97 +5,143 @@ using UnityEngine.UI;
 
 public class Flashlight : MonoBehaviour
 {
-    // 캐릭터한테 적용해야하는 스크립트! 이후에 스크립트 inspector에 손전등 오브젝트 넣어주기
+    // Flash 작동 관련
+    [SerializeField] GameObject FlashlightLight;
+    [SerializeField] GameObject Flash_Ready;
+    private bool isReady;
+    private bool FlashlightActive = false;
 
-    public GameObject FlashlightLight;
-    private bool FlashlightActive = false; //off 상태가 기본
+    // Battery 관련
+    private float LimitTime;
+    private float Left_over;
+    private float Left_Output;
+    [SerializeField] Text text_Timer;
 
-    // 배터리 잔량 표시를 위한 코드
-    public float LimitTime;
-    public Text text_Timer; // TMP 말고 그냥 Text 가져와야함
-    
+    // Charger 관련
+    [SerializeField] Text Charger_UI;
+    private float Charger;
     private bool ChargeActive = false;
+    private bool isHaveBattery = false;
 
-    bool isHaveBattery = false; // 보조 배터리를 줍기 전이라서 false라고 적었음
 
-    // Start is called before the first frame update
     void Start()
     {
-        text_Timer.text = " 1000 / " + Mathf.Round(LimitTime);
+        isReady = true;
+        FlashlightLight.gameObject.SetActive(false);
+        Flash_Ready.SetActive(true);
 
-        FlashlightLight.gameObject.SetActive(false); // 시작 시에 off 상태(on으로 하려면 true로)
+        Left_Output = Left_over /10;
+        text_Timer.text = Left_Output.ToString("")+"%";
+
         ChargeActive = false;
+        Charger_UI.text = Charger.ToString("") + " 개";
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F)) // F키 눌러서 작동
+        // 배터리의 현재 잔량을 00.0%의 형태로 출력
+        Left_Output = Left_over / 10;
+        text_Timer.text = Left_Output.ToString("N1") + "%";
+
+        if (isReady == true)
         {
-            if(FlashlightActive == false) //손전등이 꺼진 상태일 경우
+            // 손전등이 사용 가능하고, 손전등이 작동중일 때
+            if (FlashlightActive == true)
             {
-                Debug.Log("FlashLight ON");
-                FlashlightLight.gameObject.SetActive(true);
-                FlashlightActive = true;
+                Time_pass();
             }
 
-            else  // 손전등이 켜져있는 상태일 때
+            // F를 눌러 손전등 작동
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                Debug.Log("FlashLight OFF");
-                FlashlightLight.gameObject.SetActive(false);
-                FlashlightActive = false;
+                if (FlashlightActive == false)
+                {
+                    FlashlightLight.gameObject.SetActive(true);
+                    FlashlightActive = true;
+                }
+                else
+                {
+                    FlashlightActive = false;
+                    FlashlightLight.gameObject.SetActive(false);
+                }
             }
         }
-
-        while(FlashlightActive == true) // 손전등이 켜진 상태일 때만
+        // 손전등이 사용 불가능한 상태일때, 손전등을 비활성화
+        else
         {
-            text_Timer.text = " 1000 / " + Mathf.Round(LimitTime);
-
-            if (Mathf.Round(LimitTime) > 0.0f)
-            {
-                LimitTime -= Time.deltaTime; // 매 초마다 배터리가 줄어듦
-            }
-            else //배터리가 방전됐을 경우
-            {
-                Debug.Log("Low Battery");
-                FlashlightLight.gameObject.SetActive(false);
-                FlashlightActive = false;
-            }
-            
-            break;
-        }
-        
-        // 보조 배터리 작동
-        if (isHaveBattery = true && Input.GetKeyDown(KeyCode.B)) // B키 눌러서 작동
-        {
-            if (ChargeActive == false) //보조 배터리 사용 안하는 경우
-            {
-                Debug.Log("Start Charging");
-                ChargeActive = true;
-            }
-
-            else  // 보조 배터리 사용 중일 경우
-            {
-                Debug.Log("Stop Charging");
-                ChargeActive = false;
-            }
+            Flash_Ready.SetActive(false);
+            FlashlightActive = false;
+            FlashlightLight.gameObject.SetActive(false);
         }
 
-        while (ChargeActive == true) // 손전등이 켜진 상태일 때만
+        // 보조 배터리를 보유하고 있을때, B키를 누르면 배터리를 사용함
+        if (isHaveBattery = true && Input.GetKeyDown(KeyCode.B))
         {
-            text_Timer.text = " 1000 / " + Mathf.Round(LimitTime);
+            Battery_Charger();
+        }
 
-            if (Mathf.Round(LimitTime) < 1000.0f)
-            {
-                LimitTime += Time.deltaTime; // 매 초마다 충전
-            }
-            else //배터리가 충전 완료됐을 경우
-            {
-                Debug.Log("Full Battery");
-                ChargeActive = false;
-            }
+        // 보조 배터리 보유 여부 체크
+        Charger_check();
 
-            break;
+    }
+
+    void Battery_Charger()
+    {
+        Charger -= 1;
+        Charger_UI.text = Charger.ToString("") + " 개";
+
+        Left_over += 500;
+        isReady = true;
+        Flash_Ready.SetActive(true);
+
+        // 배터리를 충전했을때, 남은 시간이 배터리의 최대 시간보다 커지면
+        // 배터리의 남은 시간을 배터리의 최대 시간과 동일하게 함
+        if (Left_over >= LimitTime)
+        {
+            Left_over = LimitTime;
+        }
+    }
+
+    void Charger_check()
+    {
+        if (Charger <= 1)
+        {
+            ChargeActive = true;
+            isHaveBattery = true;
+        }
+        else
+        {
+            ChargeActive = false;
+            isHaveBattery = false;
+        }
+    }
+
+    void Time_pass()
+    {
+        if (Left_over >= 0f)
+        {
+            // 잔여시간 = (현재의 잔여시간 - 1초)
+            Left_over = Left_over -= Time.deltaTime;
+        }
+        else
+        {
+            // 잔여시간이 음수가 되지 않도록, 0f보다 작아지면 =0 으로 고정함
+            Left_over = 0;
+            // 잔여시간이 0이되면 손전등 사용 가능 여부 비활성화
+            isReady = false;
+        }
+    }
+
+    // 보조 배터리 태그(Charger)를 달고있는 오브젝트에 닿으면
+    // 보조 배터리를 획득하고, 해당 오브젝트 파괴
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Charger")
+        {
+            Charger += 1;
+            Charger_UI.text = Charger.ToString("") + " 개";
+            Destroy(other.gameObject);
         }
     }
 }
