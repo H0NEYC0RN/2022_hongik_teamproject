@@ -7,30 +7,34 @@ public class Enemy : MonoBehaviour
     // 적 움직임 속도 설정
     public float Enemy_Walk = 1;
     public float Enemy_Run = 2;
-
-    private Vector3 Target_Pos;
-    public Vector3 Pos_offset;
-
-    // 경로 이동
-    public Vector3[] WayPoints;
-    private Vector3 POS_Now;
-    private int WayPoint_Index = 0;
-
     public bool isChasing;
+
+
+    // 경로 이동 관련
     public bool isPatrol;
     public bool isdone;
-
+    public Vector3[] WayPoints;
+    private Vector3 POS_Now;
+    private Vector3 Target_Pos;
+    public Vector3 Pos_offset;
+    private int WayPoint_Index = 0;
     public int way_check = 0;
 
-
-
+    // SFX, 컴포넌트 등
+    public GameObject Walk_sfx;
+    public GameObject Run_sfx;
+    public GameObject Enemy_CR;
+    Animator Enemy_Anime;
 
 
     private void Start()
     {
+        Run_sfx.SetActive(false);
+        isChasing = false;
         isdone = false;
         isPatrol = true;
-        isChasing = false;
+        Enemy_Anime = Enemy_CR.GetComponent<Animator>();
+
         WayPoints = new Vector3[4];
 
         // 이동 경로 배열에 값 할당
@@ -40,13 +44,11 @@ public class Enemy : MonoBehaviour
         WayPoints.SetValue(new Vector3(-3.65f, 0, 4.2f), 3);
     }
 
+
     private void Update()
     {
         Patrol_check();
     }
-
-
-
 
 
     // 추적 상태가 아닐때, 순찰 경로 확인
@@ -67,8 +69,8 @@ public class Enemy : MonoBehaviour
             if (way_check == 4)
             {
                 isdone = true;
-                WayPoint_Index = 3;
-                way_check--;
+                WayPoint_Index = 2;
+                way_check = 4;
             }
             // way_check 가 3일때, 정방향 순찰중이면 5초동안 Patrol 함수 일시정지
             if (way_check == 3)
@@ -76,10 +78,21 @@ public class Enemy : MonoBehaviour
                 if (isdone == false)
                 {
                     isPatrol = false;
-                    Invoke("Wait_5Sec", 5f);
+                    Invoke("Wait_5Sec", 1f);
                 }
             }
-            if (way_check == 0)
+            // Way_check 가 2일때, 역방향 순찰중이면 5초동안 Patrol 함수 일시정지
+            if (way_check == 2)
+            {
+                if (isdone == true)
+                {
+                    isPatrol = false;
+                    Invoke("Wait_5Sec", 1f);
+                    WayPoint_Index = 1;
+                    way_check = 1;
+                }
+            }
+            if (way_check == 1)
             {
                 isdone = false;
             }
@@ -96,12 +109,14 @@ public class Enemy : MonoBehaviour
     {
         POS_Now = transform.position;
 
-        if (isPatrol == true) ;
+        if (isPatrol == true)
         {
             if (WayPoint_Index < WayPoints.Length)
             {
                 float Walk_Speed = Enemy_Walk * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(POS_Now, WayPoints[WayPoint_Index], Walk_Speed);
+                transform.LookAt(WayPoints[WayPoint_Index]);
+
                 // 현재 위치 = 이동 지점 위치면, 인덱스에 +1 하여 다음 포인트로 이동
                 if (Vector3.Distance(WayPoints[WayPoint_Index], POS_Now) == 0f)
                 {
@@ -116,10 +131,11 @@ public class Enemy : MonoBehaviour
     private void Reverse_patrol()
     {
         POS_Now = transform.position;
-        if (isPatrol == true) ;
+        if (isPatrol == true)
         {
             float Walk_Speed = Enemy_Walk * Time.deltaTime;
             transform.position = Vector3.MoveTowards(POS_Now, WayPoints[WayPoint_Index], Walk_Speed);
+            transform.LookAt(WayPoints[WayPoint_Index]);
 
 
             // 현재 위치 = 이동 지점 위치면, 인덱스에 +1 하여 다음 포인트로 이동
@@ -132,39 +148,39 @@ public class Enemy : MonoBehaviour
     }
 
 
-
-
-
     // 플레이어 추적
     private void OnTriggerStay(Collider other)
     {
-        // Player가 탐사범위 Coliider(Trigger)에 들어왔을 때, Enemy와 탐사범위가 Player의 방향으로 회전 및 이동
+        //Player가 탐사범위 Coliider(Trigger)에 들어왔을 때, Enemy와 탐사범위가 Player의 방향으로 회전 및 이동
         if (other.tag == "Player")
         {
+            Enemy_Anime.SetBool("isTracking", true);
+
             isChasing = true;
             Target_Pos = new Vector3(other.transform.position.x, transform.position.y, other.transform.position.z);
             transform.LookAt(Target_Pos);
             this.transform.position = Vector3.MoveTowards(this.transform.position, Target_Pos, Enemy_Run * Time.deltaTime);
+            Walk_sfx.SetActive(false);
+            Run_sfx.SetActive(true);
         }
         // Player가 탐사범위 안에서 Hide 상태가 되었을 때, 추격을 멈춤
         if (other.tag == "Hided")
         {
+            Enemy_Anime.SetBool("isTracking", false);
             isChasing = false;
+            Walk_sfx.SetActive(true);
+            Run_sfx.SetActive(false);
         }
     }
 
-    // Player가 탐사범위 밖으로 나갔을 때, 추격을 멈춤
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
+            Enemy_Anime.SetBool("isTracking", false);
             isChasing = false;
+            Walk_sfx.SetActive(true);
+            Run_sfx.SetActive(false);
         }
-    }
-
-    private void Patrol_Reset()
-    {
-        isPatrol = true;
-        way_check = 0;
     }
 }
