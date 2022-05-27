@@ -20,20 +20,18 @@ public class Flashlight : MonoBehaviour
     // Charger 관련
     [SerializeField] Text Charger_UI;
     private float Charger;
-    private bool ChargeActive = false;
-    private bool isHaveBattery = false;
+    private bool isHaveBattery;
 
 
     void Start()
     {
         isReady = true;
+        isHaveBattery = false;
         FlashlightLight.gameObject.SetActive(false);
         Flash_Ready.SetActive(true);
 
         Left_Output = Left_over /10;
         text_Timer.text = Left_Output.ToString("")+"%";
-
-        ChargeActive = false;
         Charger_UI.text = Charger.ToString("") + " 개";
     }
 
@@ -76,7 +74,7 @@ public class Flashlight : MonoBehaviour
         }
 
         // 보조 배터리를 보유하고 있을때, B키를 누르면 배터리를 사용함
-        if (isHaveBattery = true && Input.GetKeyDown(KeyCode.B))
+        if (isHaveBattery == true && Input.GetKeyDown(KeyCode.B))
         {
             Battery_Charger();
         }
@@ -105,14 +103,12 @@ public class Flashlight : MonoBehaviour
 
     void Charger_check()
     {
-        if (Charger <= 1)
+        if (Charger >= 1)
         {
-            ChargeActive = true;
             isHaveBattery = true;
         }
         else
         {
-            ChargeActive = false;
             isHaveBattery = false;
         }
     }
