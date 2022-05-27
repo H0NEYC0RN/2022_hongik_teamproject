@@ -12,8 +12,8 @@ public class Flashlight : MonoBehaviour
     private bool FlashlightActive = false;
 
     // Battery 관련
-    private float LimitTime;
-    private float Left_over;
+    public float LimitTime;
+    public float Left_over;
     private float Left_Output;
     [SerializeField] Text text_Timer;
 
