@@ -15,16 +15,28 @@ public class ItemRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ¾ÆÀÌÅÛ ºù±Ûºù±Û
+        // ì•„ì´í…œ ë¹™ê¸€ë¹™ê¸€
         transform.Rotate(new Vector3(0, rotSpeed * Time.deltaTime, 0));
+        
+        // ìŠ¤í˜ì´ìŠ¤ë°”ë¡œ ë¬¼ê±´ ì¤ê¸°
+        if (isPickup && Input.GetKeyDown(KeyCode.Space))
+        {
+            PickUp();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player") // ÇÃ·¹ÀÌ¾î°¡ ¾ÆÀÌÅÛ¿¡ ´êÀ¸¸é ¾ÆÀÌÅÛ È¹µæ(³ªÁß¿¡ »óÈ£ÀÛ¿ë Å° ÀÔ·ÂÀ¸·Î ¼öÁ¤ ÇÊ¿ä)
+        if(other.tag == "Player") // í”Œë ˆì´ì–´ê°€ ì•„ì´í…œì— ë‹¿ìœ¼ë©´ ì•„ì´í…œ íšë“(ë‚˜ì¤‘ì— ìƒí˜¸ì‘ìš© í‚¤ ì…ë ¥ìœ¼ë¡œ ìˆ˜ì • í•„ìš”)
         {
             Debug.Log("Item Obtained");
-            Destroy(gameObject);
+            isPickup = true;
         }
+    }
+    
+    public void PickUp()
+    {
+        pickUpText.gameObject.SetActive(true);
+        Destroy(gameObject);
     }
 }
