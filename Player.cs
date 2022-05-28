@@ -48,8 +48,18 @@ public class Player : MonoBehaviour
             IsRuning = false;
         }
 
-        MoveX = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-        MoveY = Input.GetAxis("Vertical") * Time.deltaTime * speed;
-        transform.Translate(MoveX, 0, MoveY);
+        MoveX = Input.GetAxis("Horizontal");
+        MoveY = Input.GetAxis("Vertical");
+
+        // 캐릭터가 Z축(인스펙터상 Y축)으로 움직이지 않도록 고정
+        Vector3 dir = new Vector3(MoveX, 0, MoveY); 
+        dir.Normalize(); // 정규화
+
+        // 현재 (메인)카메라가 바라보는 방향으로 이동
+        dir = Camera.main.transform.TransformDirection(dir);
+        // Player 가 공중, 바닥으로 이동하지 않도록 y(z)값을 고정
+        dir.y = 0;
+
+        transform.position += dir * speed * Time.deltaTime;
     }
 }
