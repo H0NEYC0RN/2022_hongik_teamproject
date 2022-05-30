@@ -6,17 +6,21 @@ using UnityEngine.UI;
 
 public class Player_state : MonoBehaviour
 {
-    private bool isHided;
+    private Collider Col;
+
+    public bool isHided = false;
     private bool isEvented;
     private bool Hide_ready;
+
+    public int Event_count;
+
     [SerializeField] GameObject Hide_ON;
     [SerializeField] GameObject Event_ON;
     [SerializeField] Image Fade; //1920*1080(0,0,0)
-    public int Event_count;
 
     void Start()
     {
-        isHided = false;
+        Col = this.GetComponent<CapsuleCollider>();
         Event_ON.SetActive(false);
         Hide_ON.SetActive(false);
 
@@ -49,6 +53,7 @@ public class Player_state : MonoBehaviour
                 {
                     isHided = true;
                     FadeIN();
+                    
                 }
             }
             else
@@ -63,15 +68,19 @@ public class Player_state : MonoBehaviour
     }
 
     // 캐릭터가 Hide 상태일때 캐릭터의 tag를 변경해 Enemy가 추적하지 못하게 함
+    // 캐릭터가 Hide 상태일때, Player의 Collider를 Trigger로 변경시켜 Enemy가 Player를 통과하게 함
     void Hide()
     {
         if (isHided == true)
         {
             this.tag = "Hide";
+            Col.isTrigger = true;
+
         }
         else
         {
             this.tag = "Player";
+            Col.isTrigger = false;
         }
     }
 
@@ -123,9 +132,12 @@ public class Player_state : MonoBehaviour
     // Enemy에게 붙잡히면(닿으면) 게임오버 화면 출력
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Enemy")
+        if (isHided == false)
         {
-            SceneManager.LoadScene("Gameover");
+            if (col.gameObject.tag == "Enemy")
+            {
+                SceneManager.LoadScene("Gameover");
+            }
         }
     }
 
