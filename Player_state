@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player_state : MonoBehaviour
 {
@@ -9,8 +10,9 @@ public class Player_state : MonoBehaviour
     private bool isEvented;
     [SerializeField] GameObject Hide_ON;
     [SerializeField] GameObject Event_ON;
+    [SerializeField] Image Fade; //1920*1080(0,0,0)
     public int Event_count;
-    
+
     void Start()
     {
         isHided = false;
@@ -34,18 +36,27 @@ public class Player_state : MonoBehaviour
         }
     }
 
+
     // Player의 Hide 여부 체크
     void Hide_check()
     {
-        if (Input.GetKeyUp(KeyCode.W))
+        if (isHided == false)
         {
-            isHided = true;
-            Hide_ON.SetActive(true);
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                isHided = true;
+                Hide_ON.SetActive(true);
+                FadeIN();
+            }
         }
-        if (Input.GetKeyUp(KeyCode.R))
+        else
         {
-            isHided = false;
-            Hide_ON.SetActive(false);
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                isHided = false;
+                Hide_ON.SetActive(false);
+                FadeOUT();
+            }
         }
     }
 
@@ -61,6 +72,51 @@ public class Player_state : MonoBehaviour
             this.tag = "Player";
         }
     }
+
+
+    // 화면 Fade IN
+    IEnumerator InFadeUI()
+    {
+        float StartAlpha = 0;
+        while (StartAlpha < 1.0f)
+        {
+            StartAlpha += 0.01f;
+            yield return new WaitForSeconds(0.01f);
+            Fade.color = new Color(0, 0, 0, StartAlpha);
+
+            if (StartAlpha == 1)
+            {
+                yield break;
+            }
+        }
+    }
+
+    void FadeIN()
+    {
+        StartCoroutine(InFadeUI());
+    }
+
+    // 화면 Fade OUT
+    IEnumerator OUTFadeUI()
+    {
+        float StartAlpha = 1;
+        while (StartAlpha >= 0.0f)
+        {
+            StartAlpha -= 0.01f;
+            yield return new WaitForSeconds(0.01f);
+            Fade.color = new Color(0, 0, 0, StartAlpha);
+            if (StartAlpha == 0)
+            {
+                yield break;
+            }
+        }
+    }
+
+    void FadeOUT()
+    {
+        StartCoroutine(OUTFadeUI());
+    }
+
 
     // Enemy에게 붙잡히면(닿으면) 게임오버 화면 출력
     private void OnCollisionEnter(Collision col)
