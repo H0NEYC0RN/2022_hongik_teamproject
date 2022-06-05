@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ItemUI : MonoBehaviour
+{
+   public Image Itemimage; //아이템 이미지
+    public bool hasItem; //아이템 획득 여부 함수
+  
+
+    // Update is called once per frame
+    void Update()
+    {
+        if( hasItem == false) //아이템 획득이 거짓인 경우
+        {
+            Color color = Itemimage.color;
+            color.a = 0.0f;               //알파값이 0
+            Itemimage.color = color;
+        }    
+        else( hasItem == true) // 아이템 획득이 참인 경우
+        {
+            Color color = Itemimage.color; 
+            color.a = 1.0f;               // 알파값이 1
+            Itemimage.color = color;
+        }
+    }
+}
