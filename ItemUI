@@ -7,6 +7,7 @@ public class ItemUI : MonoBehaviour
 {
    public Image Itemimage; //아이템 이미지
     public bool hasItem; //아이템 획득 여부 함수
+    [SerailizeField] GameObject Itemimage;
   
 
     // Update is called once per frame
@@ -24,5 +25,10 @@ public class ItemUI : MonoBehaviour
             color.a = 1.0f;               // 알파값이 1
             Itemimage.color = color;
         }
+    }
+
+    void Awake()
+    {
+        Itemimage = GetComponent<GameObject>(); //게임오브젝트로써의 아이템 이미지 불러오기
     }
 }
