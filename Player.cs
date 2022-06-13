@@ -12,11 +12,33 @@ public class Player : MonoBehaviour
     public bool IsRuning = false;
     
     [SerializeField] GameObject State;
+    public bool isReset;
+    
+    //Save Position (Stage별로 다르게 적용해줘야 함)
+    [SerializeField] Vector3 Save1;
+    [SerializeField] Vector3 Save2;
+    [SerializeField] Vector3 Save3;
+    [SerializeField] Vector3 Save4;
+
+
+    void Start()
+    {
+        isReset = State.GetComponent<Player_state>().Reset_ON;
+
+        IsRuning = false;
+        speed = normalSpeed;
+        State.SetActive(true);
+    }
 
 
     void Update()
     {
         Movement();
+
+        if (isReset == true)
+        {
+            Reset_check();
+        }
     }
 
 
@@ -57,6 +79,27 @@ public class Player : MonoBehaviour
             dir.y = 0;
 
             transform.position += dir * speed * Time.deltaTime;
+        }
+    }
+    
+    
+    void Reset_check()
+    {
+        if (State.GetComponent<Player_state>().Event_count == 0)
+        {
+            this.transform.position = Save1;
+        }
+        if (State.GetComponent<Player_state>().Event_count == 1)
+        {
+            this.transform.position = Save2;
+        }
+        if (State.GetComponent<Player_state>().Event_count == 2)
+        {
+            this.transform.position = Save3;
+        }
+        if (State.GetComponent<Player_state>().Event_count >= 3)
+        {
+            this.transform.position = Save4;
         }
     }
 }
