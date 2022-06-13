@@ -6,15 +6,19 @@ using UnityEngine.UI;
 public class Event_Sys : MonoBehaviour
 {
 
-    public GameObject ESC_UI;
-    public Text ESC_text;
+    [SerializeField] GameObject Stage;
+    private int Stage_num;
 
-    public GameObject PL;
+    [SerializeField] GameObject ESC_UI;
+    [SerializeField] Text ESC_text;
+
+    [SerializeField] GameObject PL;
 
 
     void Start()
     {
         ESC_text.text = "";
+        Stage_num = Stage.GetComponent<Stage_Check>().Stage_count;
     }
 
     void Update()
@@ -29,17 +33,51 @@ public class Event_Sys : MonoBehaviour
         if (Input.GetKey(KeyCode.Escape))
         {
             ESC_UI.SetActive(true);
+
             if (PL.GetComponent<Player_state>().Event_count == 1)
             {
-                ESC_text.text = "Event Count = 1";
+                if (Stage_count = 1)
+                {
+                    ESC_text.text = "Stage = 1\nEvent Count = 1";
+                }
+                if (Stage_count = 2)
+                {
+                    ESC_text.text = "Stage = 2\nEvent Count = 1";
+                }
+                if (Stage_count = 3)
+                {
+                    ESC_text.text = "Stage = 3\nEvent Count = 1";
+                }
             }
             if (PL.GetComponent<Player_state>().Event_count == 2)
             {
-                ESC_text.text = "Event Count = 2";
+                if (Stage_count = 1)
+                {
+                    ESC_text.text = "Stage = 1\nEvent Count = 2";
+                }
+                if (Stage_count = 2)
+                {
+                    ESC_text.text = "Stage = 2\nEvent Count = 2";
+                }
+                if (Stage_count = 3)
+                {
+                    ESC_text.text = "Stage = 3\nEvent Count = 2";
+                }
             }
             if (PL.GetComponent<Player_state>().Event_count >= 3)
             {
-                ESC_text.text = "Event Count = 3";
+                if (Stage_count = 1)
+                {
+                    ESC_text.text = "Stage = 1\nEvent Count = 3";
+                }
+                if (Stage_count = 2)
+                {
+                    ESC_text.text = "Stage = 2\nEvent Count = 3";
+                }
+                if (Stage_count = 3)
+                {
+                    ESC_text.text = "Stage = 3\nEvent Count = 3";
+                }
             }
         }
         else
@@ -48,5 +86,4 @@ public class Event_Sys : MonoBehaviour
             ESC_text.text = "";
         }
     }
-
 }
