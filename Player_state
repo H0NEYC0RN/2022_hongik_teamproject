@@ -18,6 +18,12 @@ public class Player_state : MonoBehaviour
     [SerializeField] GameObject Event_ON;
     [SerializeField] Image Fade; //1920*1080(0,0,0)
 
+    [SerializeField] GameObject Player;
+    public bool Reset_ON = false;
+    public bool Reset_OFF = false;
+    
+    [SerializeField] Text Obstacle_txt;
+
     void Start()
     {
         Col = this.GetComponent<CapsuleCollider>();
@@ -25,6 +31,8 @@ public class Player_state : MonoBehaviour
         Hide_ON.SetActive(false);
 
         Event_count = 0;
+        
+        Obstacle_txt.text = "";
     }
 
     void Update()
@@ -38,6 +46,12 @@ public class Player_state : MonoBehaviour
             {
                 Event_count++;
             }
+        }
+      
+        if (Reset_OFF == true)
+        {
+            Reset_ON = false;
+            Reset_OFF = false;
         }
     }
 
@@ -136,7 +150,7 @@ public class Player_state : MonoBehaviour
         {
             if (col.gameObject.tag == "Enemy")
             {
-                SceneManager.LoadScene("Gameover");
+                Reset_ON = true;
             }
         }
     }
@@ -154,6 +168,10 @@ public class Player_state : MonoBehaviour
             Hide_ready = true;
             Hide_ON.SetActive(true);
         }
+        if (other.tag == "Obstacle")
+        {
+            Obstacle_txt.text = "시간이 없다.\n빨리 찾으러 가야한다.";
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -167,6 +185,10 @@ public class Player_state : MonoBehaviour
         {
             Hide_ready = false;
             Hide_ON.SetActive(false);
+        }
+        if (other.tag == "Obstacle")
+        {
+            Obstacle_txt.text = "";
         }
     }
 }
