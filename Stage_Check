@@ -1,0 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Stage_Check : MonoBehaviour
+{
+    // Inspector 에서 Stage number 입력
+    public int Stage_count;
+}
