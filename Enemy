@@ -5,49 +5,93 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     // 적 움직임 속도 설정
-    public float Enemy_Walk = 1;
-    public float Enemy_Run = 2;
-    public bool isChasing;
-
+    [SerializeField] float Enemy_Walk = 1;
+    [SerializeField] float Enemy_Run = 2;
+    private bool isChasing;
 
     // 경로 이동 관련
-    public bool isPatrol;
-    public bool isdone;
+    private bool isPatrol;
+    private bool isdone;
     public Vector3[] WayPoints;
     private Vector3 POS_Now;
     private Vector3 Target_Pos;
-    public Vector3 Pos_offset;
+    [SerializeField] Vector3 Pos_offset;
     private int WayPoint_Index = 0;
-    public int way_check = 0;
+    private int way_check = 0;
 
     // SFX, 컴포넌트 등
-    public GameObject Walk_sfx;
-    public GameObject Run_sfx;
-    public GameObject Enemy_CR;
+    [SerializeField] GameObject Walk_sfx;
+    [SerializeField] GameObject Run_sfx;
+    [SerializeField] GameObject Enemy_CR;
     Animator Enemy_Anime;
+    
+    // Stage 판별 / Player 상태 파악 등
+    [SerializeField] GameObject State;
+    [SerializeField] GameObject Stage;
+    private int Stage_num;
+    [SerializeField] GameObject Player;
+    
+    public bool isReset;
+    
+    // 시작 위치 (Stage별로 다르게 적용해줘야 함)
+    [SerializeField] Vector3 Starting_Point;
+
+
 
 
     private void Start()
     {
-        Run_sfx.SetActive(false);
-        isChasing = false;
-        isdone = false;
-        isPatrol = true;
+        Enemy_Reset();
+        isReset = State.GetComponent<Player_state>().Reset_ON;
+        
+        WayPoints = new Vector3[4];
         Enemy_Anime = Enemy_CR.GetComponent<Animator>();
 
-        WayPoints = new Vector3[4];
-
-        // 이동 경로 배열에 값 할당
-        WayPoints.SetValue(new Vector3(3.75f, 0, 4.2f), 0);
-        WayPoints.SetValue(new Vector3(3.5f, 0, 4.2f), 1);
-        WayPoints.SetValue(new Vector3(-3.4f, 0, 4.2f), 2);
-        WayPoints.SetValue(new Vector3(-3.65f, 0, 4.2f), 3);
+        // Stage별 이동 경로 배열에 값 할당
+        if (Stage_num == 1)
+        {
+            WayPoints.SetValue(new Vector3(3.75f, 0, 4.2f), 0);
+            WayPoints.SetValue(new Vector3(3.5f, 0, 4.2f), 1);
+            WayPoints.SetValue(new Vector3(-3.4f, 0, 4.2f), 2);
+            WayPoints.SetValue(new Vector3(-3.65f, 0, 4.2f), 3);
+        }
+        if (Stage_num == 2)
+        {
+            WayPoints.SetValue(new Vector3(0, 0, 0), 0);
+            WayPoints.SetValue(new Vector3(0, 0, 0), 1);
+            WayPoints.SetValue(new Vector3(0, 0, 0), 2);
+            WayPoints.SetValue(new Vector3(0, 0, 0), 3);
+        }
+        if (Stage_num == 3)
+        {
+            WayPoints.SetValue(new Vector3(0, 0, 0), 0);
+            WayPoints.SetValue(new Vector3(0, 0, 0), 1);
+            WayPoints.SetValue(new Vector3(0, 0, 0), 2);
+            WayPoints.SetValue(new Vector3(0, 0, 0), 3);
+        }
     }
 
 
     private void Update()
     {
         Patrol_check();
+        
+        if (isReset == true)
+        {
+            Enemy_Reset();
+        }
+    }
+
+    // Player 가 Enemy 에 닿았을 때(Player_state) Enemy 위치 리셋
+    private void Enemy_Reset()
+    {
+        Run_sfx.SetActive(false);
+        
+        isdone = false;
+        isPatrol = true;
+        isChasing = false;
+
+        this.transform.position = Starting_Point;
     }
 
 
