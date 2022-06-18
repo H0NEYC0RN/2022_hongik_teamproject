@@ -4,32 +4,30 @@ using UnityEngine;
 
 public class FPSCamera : MonoBehaviour
 {
-    // ÇÃ·¹ÀÌ¾îÇÑÅ× ¸ŞÀÎÄ«¸Ş¶ó ³Ö¾îÁÖ°í, ½ºÅ©¸³Æ®´Â Ä«¸Ş¶ó¿¡ Àû¿ë½ÃÅ°±â
+    // í”Œë ˆì´ì–´í•œí…Œ ë©”ì¸ì¹´ë©”ë¼ ë„£ì–´ì£¼ê³ , ìŠ¤í¬ë¦½íŠ¸ëŠ” ì¹´ë©”ë¼ì— ì ìš©ì‹œí‚¤ê¸°
 
-    public float rotSpeed = 200; // Ä«¸Ş¶ó È¸Àü ¼Óµµ
+    [SerializeField] float Camera_Speed; // ì¹´ë©”ë¼ ì´ë™ ì†ë„
+    [SerializeField] float rotSpeed = 200; // ì¹´ë©”ë¼ íšŒì „ ì†ë„
+    [SerializeField] GameObject Player;
+    [SerializeField] Vector3 Offset;
 
-    // ¸¶¿ì½ºÀÇ X, Y °¢µµ¸¦ ³ªÅ¸³À´Ï´Ù
+    // ë§ˆìš°ìŠ¤ì˜ X, Y ê°ë„ë¥¼ ë‚˜íƒ€ëƒ…ë‹ˆë‹¤
     float mouseX;
     float mouseY;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        // ¸¶¿ì½ºÀÇ ¿òÁ÷ÀÓÀ» °¨Áö
+        transform.position = Player.transform.position + Offset;
+
+        // ë§ˆìš°ìŠ¤ì˜ ì›€ì§ì„ì„ ê°ì§€
         float h = Input.GetAxis("Mouse X");
         float v = Input.GetAxis("Mouse Y");
 
-        // ¸¶¿ì½º·Î ¿òÁ÷ÀÎ °¢µµ ´©Àû
+        // ë§ˆìš°ìŠ¤ë¡œ ì›€ì§ì¸ ê°ë„ ëˆ„ì 
         mouseX += h * rotSpeed * Time.deltaTime;
         mouseY += v * rotSpeed * Time.deltaTime;
 
-        // mouseY ¹üÀ§°¡ ÃÖ¼Ò°ª -90, ÃÖ´ë°ª 90À¸·Î °íÁ¤
+        // mouseY ë²”ìœ„ê°€ ìµœì†Œê°’ -90, ìµœëŒ€ê°’ 90ìœ¼ë¡œ ê³ ì •
         mouseY = Mathf.Clamp(mouseY, -90, 90);
 
         transform.eulerAngles = new Vector3(-mouseY, mouseX, 0);
