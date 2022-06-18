@@ -176,7 +176,8 @@ public class Flashlight : MonoBehaviour
             isPickup = true;
             if (isDestroy == true)
             {
-                Destroy(other);
+                Destroy(other.gameObject);
+                isDestroy = false;
             }
         }
     }
