@@ -1,0 +1,67 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class USB : MonoBehaviour
+{
+    [SerializeField] GameObject USB_Object;
+    [SerializeField] GameObject USB_UI;
+    [SerializeField] GameObject State;
+
+    public bool USB_done;
+    private bool isReset;
+    private bool isPickup;
+
+    void Start()
+    {
+        Reset_check();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        isReset = State.GetComponent<Player_state>().Reset_ON;
+
+        if (isReset == true)
+        {
+            Reset_check();
+        }
+
+        if (isPickup == true)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                USB_done = true;
+                USB_Object.SetActive(false);
+                USB_UI.SetActive(true);
+                this.tag = "Hide";
+            }
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isPickup = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isPickup = false;
+        }
+    }
+
+    private void Reset_check()
+    {
+        // 원하는 진행상황 저장에 따라 (Event_count <= 1) 부분 수정
+        if (State.GetComponent<Player_state>().Event_count <= 1)
+        {
+            USB_done = false;
+            USB_Object.SetActive(true);
+            USB_UI.SetActive(false);
+            this.tag = "Event";
+        }
+    }
+}
