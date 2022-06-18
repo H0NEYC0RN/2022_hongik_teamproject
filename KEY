@@ -1,0 +1,67 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class KEY : MonoBehaviour
+{
+    [SerializeField] GameObject KEY_Object;
+    [SerializeField] GameObject KEY_UI;
+    [SerializeField] GameObject State;
+
+    public bool KEY_done;
+    private bool isReset;
+    private bool isPickup;
+
+    void Start()
+    {
+        Reset_check();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        isReset = State.GetComponent<Player_state>().Reset_ON;
+
+        if (isReset == true)
+        {
+            Reset_check();
+        }
+
+        if (isPickup == true)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                KEY_done = true;
+                KEY_Object.SetActive(false);
+                KEY_UI.SetActive(true);
+                this.tag = "Hide";
+            }
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isPickup = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            isPickup = false;
+        }
+    }
+
+    private void Reset_check()
+    {
+        // 원하는 진행상황 저장에 따라 (Event_count <= 1) 부분 수정
+        if (State.GetComponent<Player_state>().Event_count <= 0)
+        {
+            KEY_done = false;
+            KEY_Object.SetActive(true);
+            KEY_UI.SetActive(false);
+            this.tag = "Event";
+        }
+    }
+}
