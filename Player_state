@@ -8,32 +8,42 @@ public class Player_state : MonoBehaviour
 {
     private Collider Col;
 
+    //숨기 기능 관련
     public bool isHided = false;
     public bool Hide_ready;
-    private bool isEvented;
-
-
-    public int Event_count;
-
     [SerializeField] GameObject Hide_ON;
+    [SerializeField] GameObject Hide_OFF;
     [SerializeField] GameObject Event_ON;
     [SerializeField] Image Fade; //1920*1080(0,0,0)
 
-    //[SerializeField] GameObject Player;
-    public bool Reset_ON = false;
-    public bool Reset_OFF = false;
+    //클리어 조건 관련
+    public int Event_count = 0;
+    [SerializeField] GameObject USB;
+    [SerializeField] GameObject KEY;
+    [SerializeField] GameObject Exit;
+    public bool USB_done;
+    public bool KEY_done;
+    public bool isExit;
 
+    //리셋 및 게임 오버 조건 관련
+    public bool Reset_ON = false;
+    public int Death_count = 0;
+
+    //UI 관련
     [SerializeField] Text Obstacle_txt;
+    [SerializeField] GameObject Dialogue;
 
     void Start()
     {
         Col = this.GetComponent<CapsuleCollider>();
         Event_ON.SetActive(false);
+
         Hide_ON.SetActive(false);
+        Hide_OFF.SetActive(true);
 
-        Event_count = 0;
-
+        Dialogue.SetActive(false);
         Obstacle_txt.text = "";
+        
     }
 
     void Update()
@@ -41,15 +51,31 @@ public class Player_state : MonoBehaviour
         Hide();
         Hide_check();
 
-        if (isEvented == true)
-        {
-            if (Input.GetKeyUp(KeyCode.E))
-            {
-                Event_count++;
-            }
-        }
+        USB_done = USB.GetComponent<USB>().USB_done;
+        KEY_done = KEY.GetComponent<KEY>().KEY_done;
+        isExit = Exit.GetComponent<Exit>().isExit;
+
+        Event_check();
     }
 
+    void Event_check()
+    {
+        if (KEY_done ==true)
+        {
+            if (USB_done == true)
+            {
+                Event_count = 2;
+            }
+            else
+            {
+                Event_count = 1;
+            }
+        }
+        else
+        {
+            Event_count = 0;
+        }
+    }
 
     // Player의 Hide 여부 체크
     void Hide_check()
@@ -64,10 +90,7 @@ public class Player_state : MonoBehaviour
                     FadeIN();
                 }
             }
-        }
-        else
-        {
-            if (isHided == true)
+            else
             {
                 if (Input.GetKeyUp(KeyCode.E))
                 {
@@ -86,6 +109,7 @@ public class Player_state : MonoBehaviour
         {
             this.tag = "Hide";
             Col.isTrigger = true;
+            Obstacle_txt.text = "무사히 숨었다. 다시 나갈까?\n(E키를 눌러 상호작용 할 수 있다.)";
 
         }
         else
@@ -152,6 +176,7 @@ public class Player_state : MonoBehaviour
             if (col.gameObject.tag == "Enemy")
             {
                 Reset_ON = true;
+                Death_count += 1;
                 Invoke("Reset_off", 1f);
             }
         }
@@ -163,16 +188,29 @@ public class Player_state : MonoBehaviour
         if (other.tag == "Event")
         {
             Event_ON.SetActive(true);
-            isEvented = true;
+            Dialogue.SetActive(true);
+            Obstacle_txt.text = "E키를 눌러 상호작용 할 수 있다.";
         }
         if (other.tag == "Hide_Object")
         {
             Hide_ready = true;
             Hide_ON.SetActive(true);
+            Hide_OFF.SetActive(false);
+
+            Event_ON.SetActive(true);
+            Dialogue.SetActive(true);
+            Obstacle_txt.text = "숨을 수 있는 곳 같다.\n(E키를 눌러 상호작용 할 수 있다.)";
         }
         if (other.tag == "Obstacle")
         {
+            Dialogue.SetActive(true);
             Obstacle_txt.text = "시간이 없다.\n빨리 찾으러 가야한다.";
+        }
+        if (other.tag == "Hide")
+        {
+            Event_ON.SetActive(false);
+            Dialogue.SetActive(false);
+            Obstacle_txt.text = "";
         }
     }
 
@@ -181,15 +219,22 @@ public class Player_state : MonoBehaviour
         if (other.tag == "Event")
         {
             Event_ON.SetActive(false);
-            isEvented = false;
+            Dialogue.SetActive(false);
+            Obstacle_txt.text = "";
         }
         if (other.tag == "Hide_Object")
         {
             Hide_ready = false;
             Hide_ON.SetActive(false);
+            Hide_OFF.SetActive(true);
+
+            Event_ON.SetActive(false);
+            Dialogue.SetActive(false);
+            Obstacle_txt.text = "";
         }
         if (other.tag == "Obstacle")
         {
+            Dialogue.SetActive(false);
             Obstacle_txt.text = "";
         }
     }
