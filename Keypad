@@ -423,27 +423,6 @@ public class Keypad : MonoBehaviour
                         Pass_D.text = "0";
                     }
                 }
-                if (Stage_random == 4)
-                {
-                    if (A_input == 3 && B_input == 4 && C_input == 5 && D_input == 6)
-                    {
-                        Keypad_done = true;
-                        Pass_Hint.text = "올바른 비밀번호입니다.";
-
-                        this.tag = "Event_done";
-                    }
-                    else
-                    {
-                        Pass_Progress = 1;
-                        Keypad_done = false;
-                        Reset_ON = true;
-                        Pass_Hint.text = "비밀번호가 틀렸습니다. 다시 입력해주세요.";
-                        Pass_A.text = "0";
-                        Pass_B.text = "0";
-                        Pass_C.text = "0";
-                        Pass_D.text = "0";
-                    }
-                }
             }
         }
 
