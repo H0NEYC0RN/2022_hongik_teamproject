@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,23 +7,23 @@ public class Player : MonoBehaviour
 {
     float speed, MoveX, MoveY;
     [SerializeField] float normalSpeed, runSpeed;
-    
+
     float hp;
     public bool IsRuning = false;
-    
+
     [SerializeField] GameObject State;
     public bool isReset;
-    
+
     //Save Position (Stage별로 다르게 적용해줘야 함)
-    [SerializeField] Vector3 Save1;
+    [SerializeField] Vector3 Save1; //Event_count = 0
     [SerializeField] Vector3 Save2;
     [SerializeField] Vector3 Save3;
-    [SerializeField] Vector3 Save4;
+    [SerializeField] Vector3 Save4; //Evnet_count = 3
 
 
     void Start()
     {
-        isReset = State.GetComponent<Player_state>().Reset_ON;
+        this.transform.position = Save1;
 
         IsRuning = false;
         speed = normalSpeed;
@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     {
         Movement();
 
+        isReset = State.GetComponent<Player_state>().Reset_ON;
+
         if (isReset == true)
         {
             Reset_check();
@@ -44,26 +46,26 @@ public class Player : MonoBehaviour
 
     void Movement()
     {
-        if(Input.GetKey(KeyCode.LeftShift))
-        { 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
             if (GameObject.Find("HP_Bar").GetComponent<HP>().currenthp <= 5)
             {
                 speed = normalSpeed;
                 IsRuning = false;
             }
 
-            else if(GameObject.Find("HP_Bar").GetComponent<HP>().currenthp >= 15)
+            else if (GameObject.Find("HP_Bar").GetComponent<HP>().currenthp >= 15)
             {
                 speed = runSpeed;
                 IsRuning = true;
             }
-        }    
+        }
         else
         {
             speed = normalSpeed;
             IsRuning = false;
         }
-        
+
         if (State.GetComponent<Player_state>().isHided == false)
         {
             MoveX = Input.GetAxis("Horizontal");
@@ -81,25 +83,29 @@ public class Player : MonoBehaviour
             transform.position += dir * speed * Time.deltaTime;
         }
     }
-    
-    
+
+
     void Reset_check()
     {
         if (State.GetComponent<Player_state>().Event_count == 0)
         {
             this.transform.position = Save1;
+            Debug.Log("Save1");
         }
         if (State.GetComponent<Player_state>().Event_count == 1)
         {
             this.transform.position = Save2;
+            Debug.Log("Save2");
         }
         if (State.GetComponent<Player_state>().Event_count == 2)
         {
             this.transform.position = Save3;
+            Debug.Log("Save3");
         }
         if (State.GetComponent<Player_state>().Event_count >= 3)
         {
             this.transform.position = Save4;
+            Debug.Log("Save4");
         }
     }
 }
