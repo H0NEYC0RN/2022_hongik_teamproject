@@ -7,7 +7,7 @@ public class Flashlight : MonoBehaviour
 {
     // Flash 작동 관련
     [SerializeField] GameObject FlashlightLight;
-    [SerializeField] GameObject Flash_Ready;
+    [SerializeField] Image Flash_Ready;
     private bool isReady;
     private bool FlashlightActive = false;
 
@@ -19,8 +19,21 @@ public class Flashlight : MonoBehaviour
 
     // Charger 관련
     [SerializeField] Text Charger_UI;
+    [SerializeField] GameObject Charger_Objcet;
+    [SerializeField] Vector3 Charger_A;
+    [SerializeField] Vector3 Charger_B;
+    [SerializeField] Vector3 Charger_C;
+
+    //UI관련
+    [SerializeField] GameObject Dialogue;
+    [SerializeField] Text Text;
+
+    [SerializeField] GameObject Event_UI;
+
     private float Charger;
     private bool isHaveBattery;
+    private bool isPickup;
+    private bool isDestroy;
 
 
     void Start()
@@ -28,11 +41,18 @@ public class Flashlight : MonoBehaviour
         isReady = true;
         isHaveBattery = false;
         FlashlightLight.gameObject.SetActive(false);
-        Flash_Ready.SetActive(true);
+        Color color_true = Flash_Ready.color;
+        color_true.a = 1.0f;
+        Flash_Ready.color = color_true;
+
 
         Left_Output = Left_over /10;
         text_Timer.text = Left_Output.ToString("")+"%";
         Charger_UI.text = Charger.ToString("") + " 개";
+
+        Instantiate(Charger_Objcet, Charger_A, Quaternion.identity);
+        Instantiate(Charger_Objcet, Charger_B, Quaternion.identity);
+        Instantiate(Charger_Objcet, Charger_C, Quaternion.identity);
     }
 
 
@@ -68,7 +88,9 @@ public class Flashlight : MonoBehaviour
         // 손전등이 사용 불가능한 상태일때, 손전등을 비활성화
         else
         {
-            Flash_Ready.SetActive(false);
+            Color color_false = Flash_Ready.color;
+            color_false.a = 0.0f;
+            Flash_Ready.color = color_false;
             FlashlightActive = false;
             FlashlightLight.gameObject.SetActive(false);
         }
@@ -82,6 +104,16 @@ public class Flashlight : MonoBehaviour
         // 보조 배터리 보유 여부 체크
         Charger_check();
 
+
+        if (isPickup == true)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Charger += 1;
+                Charger_UI.text = Charger.ToString("") + " 개";
+                isDestroy = true;
+            }
+        }
     }
 
     void Battery_Charger()
@@ -91,7 +123,9 @@ public class Flashlight : MonoBehaviour
 
         Left_over += 500;
         isReady = true;
-        Flash_Ready.SetActive(true);
+        Color color_true = Flash_Ready.color;
+        color_true.a = 1.0f;
+        Flash_Ready.color = color_true;
 
         // 배터리를 충전했을때, 남은 시간이 배터리의 최대 시간보다 커지면
         // 배터리의 남은 시간을 배터리의 최대 시간과 동일하게 함
@@ -131,13 +165,28 @@ public class Flashlight : MonoBehaviour
 
     // 보조 배터리 태그(Charger)를 달고있는 오브젝트에 닿으면
     // 보조 배터리를 획득하고, 해당 오브젝트 파괴
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Charger")
         {
-            Charger += 1;
-            Charger_UI.text = Charger.ToString("") + " 개";
-            Destroy(other.gameObject);
+            Event_UI.SetActive(true);
+            Dialogue.SetActive(true);
+            Text.text = "E키를 눌러 상호작용 할 수 있다.";
+
+            isPickup = true;
+            if (isDestroy == true)
+            {
+                Destroy(other);
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Charger")
+        {
+            Event_UI.SetActive(false);
+            Dialogue.SetActive(false);
+            Text.text = "";
         }
     }
 }
