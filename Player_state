@@ -9,8 +9,9 @@ public class Player_state : MonoBehaviour
     private Collider Col;
 
     public bool isHided = false;
+    public bool Hide_ready;
     private bool isEvented;
-    private bool Hide_ready;
+
 
     public int Event_count;
 
@@ -18,10 +19,10 @@ public class Player_state : MonoBehaviour
     [SerializeField] GameObject Event_ON;
     [SerializeField] Image Fade; //1920*1080(0,0,0)
 
-    [SerializeField] GameObject Player;
+    //[SerializeField] GameObject Player;
     public bool Reset_ON = false;
     public bool Reset_OFF = false;
-    
+
     [SerializeField] Text Obstacle_txt;
 
     void Start()
@@ -31,7 +32,7 @@ public class Player_state : MonoBehaviour
         Hide_ON.SetActive(false);
 
         Event_count = 0;
-        
+
         Obstacle_txt.text = "";
     }
 
@@ -47,12 +48,6 @@ public class Player_state : MonoBehaviour
                 Event_count++;
             }
         }
-      
-        if (Reset_OFF == true)
-        {
-            Reset_ON = false;
-            Reset_OFF = false;
-        }
     }
 
 
@@ -67,10 +62,12 @@ public class Player_state : MonoBehaviour
                 {
                     isHided = true;
                     FadeIN();
-                    
                 }
             }
-            else
+        }
+        else
+        {
+            if (isHided == true)
             {
                 if (Input.GetKeyUp(KeyCode.E))
                 {
@@ -142,6 +139,10 @@ public class Player_state : MonoBehaviour
         StartCoroutine(OUTFadeUI());
     }
 
+    private void Reset_off()
+    {
+        Reset_ON = false;
+    }
 
     // Enemy에게 붙잡히면(닿으면) 게임오버 화면 출력
     private void OnCollisionEnter(Collision col)
@@ -151,6 +152,7 @@ public class Player_state : MonoBehaviour
             if (col.gameObject.tag == "Enemy")
             {
                 Reset_ON = true;
+                Invoke("Reset_off", 1f);
             }
         }
     }
@@ -163,7 +165,7 @@ public class Player_state : MonoBehaviour
             Event_ON.SetActive(true);
             isEvented = true;
         }
-        if (other.tag == "Hide_object")
+        if (other.tag == "Hide_Object")
         {
             Hide_ready = true;
             Hide_ON.SetActive(true);
@@ -181,7 +183,7 @@ public class Player_state : MonoBehaviour
             Event_ON.SetActive(false);
             isEvented = false;
         }
-        if (other.tag == "Hide_object")
+        if (other.tag == "Hide_Object")
         {
             Hide_ready = false;
             Hide_ON.SetActive(false);
