@@ -7,32 +7,32 @@ public class Enemy : MonoBehaviour
     // 적 움직임 속도 설정
     [SerializeField] float Enemy_Walk = 1;
     [SerializeField] float Enemy_Run = 2;
-    private bool isChasing;
+    public bool isChasing;
 
     // 경로 이동 관련
-    private bool isPatrol;
-    private bool isdone;
+    public bool isPatrol;
+    public bool isdone;
     public Vector3[] WayPoints;
     private Vector3 POS_Now;
     private Vector3 Target_Pos;
     [SerializeField] Vector3 Pos_offset;
-    private int WayPoint_Index = 0;
-    private int way_check = 0;
+    public int WayPoint_Index = 0;
+    public int way_check = 0;
+    public bool way_check_ready = true;
 
     // SFX, 컴포넌트 등
     [SerializeField] GameObject Walk_sfx;
     [SerializeField] GameObject Run_sfx;
     [SerializeField] GameObject Enemy_CR;
     Animator Enemy_Anime;
-    
+
     // Stage 판별 / Player 상태 파악 등
     [SerializeField] GameObject State;
     [SerializeField] GameObject Stage;
-    private int Stage_num;
-    [SerializeField] GameObject Player;
-    
-    public bool isReset;
-    
+    public int Stage_count;
+
+    public bool isReset = true;
+
     // 시작 위치 (Stage별로 다르게 적용해줘야 함)
     [SerializeField] Vector3 Starting_Point;
 
@@ -42,27 +42,28 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         Enemy_Reset();
-        isReset = State.GetComponent<Player_state>().Reset_ON;
-        
+
         WayPoints = new Vector3[4];
         Enemy_Anime = Enemy_CR.GetComponent<Animator>();
 
+        Stage_count = Stage.GetComponent<Stage_Check>().Stage_count;
+
         // Stage별 이동 경로 배열에 값 할당
-        if (Stage_num == 1)
+        if (Stage_count == 1)
         {
             WayPoints.SetValue(new Vector3(3.75f, 0, 4.2f), 0);
             WayPoints.SetValue(new Vector3(3.5f, 0, 4.2f), 1);
             WayPoints.SetValue(new Vector3(-3.4f, 0, 4.2f), 2);
-            WayPoints.SetValue(new Vector3(-3.65f, 0, 4.2f), 3);
+            WayPoints.SetValue(new Vector3(-3.45f, 0, 4.2f), 3);
         }
-        if (Stage_num == 2)
+        if (Stage_count == 2)
         {
             WayPoints.SetValue(new Vector3(0, 0, 0), 0);
             WayPoints.SetValue(new Vector3(0, 0, 0), 1);
             WayPoints.SetValue(new Vector3(0, 0, 0), 2);
             WayPoints.SetValue(new Vector3(0, 0, 0), 3);
         }
-        if (Stage_num == 3)
+        if (Stage_count == 3)
         {
             WayPoints.SetValue(new Vector3(0, 0, 0), 0);
             WayPoints.SetValue(new Vector3(0, 0, 0), 1);
@@ -74,11 +75,15 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        Patrol_check();
-        
         if (isReset == true)
         {
             Enemy_Reset();
+        }
+        else
+        {
+            Patrol_check();
+
+            isReset = State.GetComponent<Player_state>().Reset_ON;
         }
     }
 
@@ -86,12 +91,18 @@ public class Enemy : MonoBehaviour
     private void Enemy_Reset()
     {
         Run_sfx.SetActive(false);
-        
+        Walk_sfx.SetActive(false);
+
+        isChasing = false;
         isdone = false;
         isPatrol = true;
-        isChasing = false;
+
+        way_check = 0;
+        WayPoint_Index = 0;
 
         this.transform.position = Starting_Point;
+
+        isReset = false;
     }
 
 
@@ -122,7 +133,7 @@ public class Enemy : MonoBehaviour
                 if (isdone == false)
                 {
                     isPatrol = false;
-                    Invoke("Wait_5Sec", 1f);
+                    Invoke("Wait_5Sec", 3f);
                 }
             }
             // Way_check 가 2일때, 역방향 순찰중이면 5초동안 Patrol 함수 일시정지
@@ -131,7 +142,7 @@ public class Enemy : MonoBehaviour
                 if (isdone == true)
                 {
                     isPatrol = false;
-                    Invoke("Wait_5Sec", 1f);
+                    Invoke("Wait_5Sec", 3f);
                     WayPoint_Index = 1;
                     way_check = 1;
                 }
@@ -148,6 +159,11 @@ public class Enemy : MonoBehaviour
         isPatrol = true;
     }
 
+    private void Check_ready()
+    {
+        way_check_ready = true;
+    }
+
     // Enemy가 지정된 경로를 따라 이동함
     private void Patrol()
     {
@@ -155,6 +171,9 @@ public class Enemy : MonoBehaviour
 
         if (isPatrol == true)
         {
+            Walk_sfx.SetActive(true);
+            Enemy_Anime.SetBool("isWalking", true);
+
             if (WayPoint_Index < WayPoints.Length)
             {
                 float Walk_Speed = Enemy_Walk * Time.deltaTime;
@@ -169,12 +188,20 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            Walk_sfx.SetActive(false);
+            Enemy_Anime.SetBool("isWalking", false);
+        }
     }
-
     // 지정된 경로 순찰 완료 후, 다시 경로를 따라 되돌아감
     private void Reverse_patrol()
     {
         POS_Now = transform.position;
+
+        Walk_sfx.SetActive(true);
+        Enemy_Anime.SetBool("isWalking", true);
+
         if (isPatrol == true)
         {
             float Walk_Speed = Enemy_Walk * Time.deltaTime;
@@ -189,7 +216,13 @@ public class Enemy : MonoBehaviour
                 way_check--;
             }
         }
+        else
+        {
+            Walk_sfx.SetActive(false);
+            Enemy_Anime.SetBool("isWalking", false);
+        }
     }
+
 
 
     // 플레이어 추적
