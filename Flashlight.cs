@@ -38,6 +38,7 @@ public class Flashlight : MonoBehaviour
 
     void Start()
     {
+        isPickup = false;
         isReady = true;
         isHaveBattery = false;
         FlashlightLight.gameObject.SetActive(false);
@@ -105,13 +106,14 @@ public class Flashlight : MonoBehaviour
         Charger_check();
 
 
-        if (isPickup == true)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (isPickup == true)
             {
                 Charger += 1;
                 Charger_UI.text = Charger.ToString("") + " 개";
                 isDestroy = true;
+                isPickup = false;
             }
         }
     }
@@ -178,6 +180,7 @@ public class Flashlight : MonoBehaviour
             {
                 Destroy(other.gameObject);
                 isDestroy = false;
+                isPickup = false;
             }
         }
     }
