@@ -14,6 +14,7 @@ public class FPSCamera : MonoBehaviour
     // 마우스의 X, Y 각도를 나타냅니다
     float mouseX;
     float mouseY;
+    float mouseZ;
 
     void Update()
     {
@@ -26,10 +27,12 @@ public class FPSCamera : MonoBehaviour
         // 마우스로 움직인 각도 누적
         mouseX += h * rotSpeed * Time.deltaTime;
         mouseY += v * rotSpeed * Time.deltaTime;
+        mouseZ += a * rotSpeed * Time.deltaTime;
 
         // mouseY 범위가 최소값 -90, 최대값 90으로 고정
         mouseY = Mathf.Clamp(mouseY, -90, 90);
+        mouseZ = Mathf.Clamp(mouseY, -90, 90);
 
-        transform.eulerAngles = new Vector3(-mouseY, mouseX, 0);
+        transform.eulerAngles = new Vector3(-mouseY, mouseX, -mouseZ);
     }
 }
