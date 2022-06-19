@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OpeningScene : MonoBehaviour
 {
-    // OpenScene Äµ¹ö½º¿Í ±× ÀÚ½Ä UIµé¿¡ ÀüºÎ ÅÂ±× °¢°¢ ´Ş¾ÆÁÙ °Í(ÀÌ¸§°ú °°Àº ÅÂ±×)
+    // OpenScene ìº”ë²„ìŠ¤ì™€ ê·¸ ìì‹ UIë“¤ì— ì „ë¶€ íƒœê·¸ ê°ê° ë‹¬ì•„ì¤„ ê²ƒ(ì´ë¦„ê³¼ ê°™ì€ íƒœê·¸)
     public GameObject Opening; // OpeningScene Canvas
+    public GameObject Title; // Title
     public GameObject OP1; // Opening01
     public GameObject OP2; // Opening02
     public GameObject OP3; // Opening03
-    int enterCount = 0; // ¼ıÀÚ Ä«¿îÆ®·Î ¼ø¼­¸¦ Á¤ÇØÁÙ °Í
+    int enterCount = 0; // ìˆ«ì ì¹´ìš´íŠ¸ë¡œ ìˆœì„œë¥¼ ì •í•´ì¤„ ê²ƒ
     
     // Start is called before the first frame update
     void Start()
@@ -24,33 +26,41 @@ public class OpeningScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("Esc Pressed");
+            Application.Quit(); // ê²Œì„ ì¢…ë£Œ
+        }
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (enterCount == 0)
             {
                 Debug.Log("SpaceBar Pressed");
-                OP1.SetActive(false);
+                Title.SetActive(false);
                 enterCount++;
             }
 
             else if (enterCount == 1)
             {
                 Debug.Log("SpaceBar Pressed");
-                OP2.SetActive(false);
+                OP1.SetActive(false);
                 enterCount++;
             }
 
             else if (enterCount == 2)
             {
                 Debug.Log("SpaceBar Pressed");
-                OP3.SetActive(false);
+                OP2.SetActive(false);
                 enterCount++;
             }
 
             else if (enterCount == 3)
             {
                 Debug.Log("SpaceBar Pressed");
+                OP3.SetActive(false);
                 Opening.SetActive(false);
+                SceneManager.LoadScene("Main", LoadSceneMode.Single); // ê²Œì„ Scene ì´ë¦„ì„ ë„£ì–´ì£¼ê¸°
             }
         }
         
