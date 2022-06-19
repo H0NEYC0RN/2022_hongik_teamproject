@@ -11,10 +11,22 @@ public class FPSCamera : MonoBehaviour
     [SerializeField] GameObject Player;
     [SerializeField] Vector3 Offset;
 
+    [SerializeField] Camera Cam;
+
     // 마우스의 X, Y 각도를 나타냅니다
     float mouseX;
     float mouseY;
 
+    private void Start()
+    {
+        RaycastHit Hit;
+        Ray ray = Cam.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out Hit))
+        {
+            Transform objectHit = Hit.transform;
+        }
+    }
     void Update()
     {
         transform.position = Player.transform.position + Offset;
