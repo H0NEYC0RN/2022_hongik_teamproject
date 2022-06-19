@@ -23,6 +23,7 @@ public class FPSCamera : MonoBehaviour
         // 마우스의 움직임을 감지
         float h = Input.GetAxis("Mouse X");
         float v = Input.GetAxis("Mouse Y");
+        float a = Input.GetAxis("Mouse Z");
 
         // 마우스로 움직인 각도 누적
         mouseX += h * rotSpeed * Time.deltaTime;
