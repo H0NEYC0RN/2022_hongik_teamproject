@@ -21,14 +21,18 @@ public class SceanManager : MonoBehaviour
 
     void Update()
     {
-        Opening_done = this.GetComponent<OpeningScene>().isdone;
+        if(Stage_num == 1)
+        {
+            Opening_done = this.GetComponent<OpeningScene>().isdone;
+        }
 
-        SceanLoad();
         if (Stage_num ==2)
         {
             Game_Clear();
             Game_Over();
         }
+
+        SceanLoad();
     }
 
     void SceanLoad()
