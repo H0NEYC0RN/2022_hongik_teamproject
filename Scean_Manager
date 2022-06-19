@@ -13,6 +13,7 @@ public class SceanManager : MonoBehaviour
     [SerializeField] int Stage_num;
     [SerializeField] GameObject State;
 
+    private bool Opening_done;
     private bool Key_done;
     private bool Usb_done;
     private bool isExit;
@@ -20,6 +21,8 @@ public class SceanManager : MonoBehaviour
 
     void Update()
     {
+        Opening_done = this.GetComponent<OpeningScene>().isdone;
+
         SceanLoad();
         if (Stage_num ==2)
         {
@@ -32,16 +35,19 @@ public class SceanManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Stage_num == 1)
+            if (Opening_done == true)
             {
-                // 임시로 스페이스바 누를 시 게임 시작되게 작성함
-                // 타이틀 관련 기능은 여기다 넣으면 작동할 것!
-                SceneManager.LoadScene("Main");
+                if (Stage_num == 1)
+                {
+                    // 임시로 스페이스바 누를 시 게임 시작되게 작성함
+                    // 타이틀 관련 기능은 여기다 넣으면 작동할 것!
+                    SceneManager.LoadScene("Main");
+                }
             }
             if (Stage_num == 3)
             {
-                //인게임 메인 화면 이름 넣기
-                SceneManager.LoadScene("Main");
+                //타이틀 화면 이름 넣기
+                SceneManager.LoadScene("Title");
             }
             if(Stage_num == 4)
             {
