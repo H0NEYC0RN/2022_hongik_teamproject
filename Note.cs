@@ -1,73 +1,43 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Note : MonoBehaviour
 {
-    public Transform Player;
-    public static bool Is_Note_On = false;      
-    public GameObject noteMenuCanvas;           //쪽지 캔버스
-    public GameObject note_key_Canvas;          //가까이 갔을 때 상호작용 캔버스
-
-
+    [SerializeField] GameObject Note_Object;
+    [SerializeField] GameObject Player_State;
+    [SerializeField] GameObject Dialogue;
+    public GameObject noteCanvas;
 
     void Update()
     {
-        if (Player)
+
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+       
+
+        Debug.Log(GameObject.Find("Keypad").GetComponent<Keypad>().Stage_random);
+        if (other.tag == "Player")
         {
-            float dist = Vector3.Distance(Player.position, transform.position);
-
-            if (dist <= 2.3)        //거리확인
+            if(Input.GetKeyDown(KeyCode.E))
             {
-                Note_Key_On();      //거리 내에 있으면 상호작용 키 표시
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                   
-
-                    if (Is_Note_On)
-                    {
-                        Note_Off();
-                    }
-                    else
-                    {
-                        Note_On();
-
-                    }
-                }
+                noteCanvas.SetActive(true);
             }
-            else
-            {
-                Note_Key_Off();     //거리 밖이면 상호작용 키 안보이게
-            }
-
+            //Note_txt.text = "비밀번호";
+           
         }
     }
 
-    //쪽지 온오프
-    public void Note_Off()
-    {
-        noteMenuCanvas.SetActive(false);
-        Time.timeScale = 1f;
-        Is_Note_On = false;
-    }
 
-    public void Note_On()
+    private void OnTriggerExit(Collider other)
     {
-        Note_Key_Off();
-        noteMenuCanvas.SetActive(true);
-        Time.timeScale = 0f;
-        Is_Note_On = true;
-    }
+        if (other.tag == "Player")
+        {
+            noteCanvas.SetActive(false);
 
-
-    //상호작용 키 온오프
-    public void Note_Key_On()
-    {
-        note_key_Canvas.SetActive(true);
-    }
-
-    public void Note_Key_Off()
-    {
-        note_key_Canvas.SetActive(false);
+        }
     }
 }
