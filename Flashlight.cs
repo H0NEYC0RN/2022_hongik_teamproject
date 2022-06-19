@@ -27,7 +27,6 @@ public class Flashlight : MonoBehaviour
     //UI관련
     [SerializeField] GameObject Dialogue;
     [SerializeField] Text Text;
-
     [SerializeField] GameObject Event_UI;
 
     private float Charger;
@@ -47,8 +46,8 @@ public class Flashlight : MonoBehaviour
         Flash_Ready.color = color_true;
 
 
-        Left_Output = Left_over /10;
-        text_Timer.text = Left_Output.ToString("")+"%";
+        Left_Output = Left_over / 10;
+        text_Timer.text = Left_Output.ToString("") + "%";
         Charger_UI.text = Charger.ToString("") + " 개";
 
         Instantiate(Charger_Objcet, Charger_A, Quaternion.identity);
@@ -181,6 +180,8 @@ public class Flashlight : MonoBehaviour
                 Destroy(other.gameObject);
                 isDestroy = false;
                 isPickup = false;
+                Event_UI.SetActive(false);
+                Dialogue.SetActive(false);
             }
         }
     }
