@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class Event_Sys : MonoBehaviour
 {
-
-    [SerializeField] GameObject Stage;
-    private int Stage_count;
-
     [SerializeField] GameObject ESC_UI;
     [SerializeField] Text ESC_text;
 
@@ -18,7 +14,6 @@ public class Event_Sys : MonoBehaviour
     void Start()
     {
         ESC_text.text = "";
-        Stage_count = this.GetComponent<Stage_Check>().Stage_count;
     }
 
     void Update()
@@ -35,63 +30,19 @@ public class Event_Sys : MonoBehaviour
             ESC_UI.SetActive(true);
             if (PL.GetComponent<Player_state>().Event_count == 0)
             {
-                if (Stage_count == 1)
-                {
-                    ESC_text.text = "Stage = 1\nEvent Count = 0";
-                }
-                if (Stage_count == 2)
-                {
-                    ESC_text.text = "Stage = 2\nEvent Count = 0";
-                }
-                if (Stage_count == 3)
-                {
-                    ESC_text.text = "Stage = 3\nEvent Count = 0";
-                }
+                ESC_text.text = "학생회실 비밀번호를 찾아야 한다.\n또 실습실 어딘가에 쪽지를 붙여놨을텐데..\n\n일단 A동 4층의 그래픽 실습실로 가자.";
             }
             if (PL.GetComponent<Player_state>().Event_count == 1)
             {
-                if (Stage_count == 1)
-                {
-                    ESC_text.text = "Stage = 1\nEvent Count = 1";
-                }
-                if (Stage_count == 2)
-                {
-                    ESC_text.text = "Stage = 2\nEvent Count = 1";
-                }
-                if (Stage_count == 3)
-                {
-                    ESC_text.text = "Stage = 3\nEvent Count = 1";
-                }
+                ESC_text.text = "학생회실 비밀번호를 알아냈다.\n\n게임학부 학생회실로 가 비밀번호를 해제하고 열쇠를 가져오자.";
             }
             if (PL.GetComponent<Player_state>().Event_count == 2)
             {
-                if (Stage_count == 1)
-                {
-                    ESC_text.text = "Stage = 1\nEvent Count = 2";
-                }
-                if (Stage_count == 2)
-                {
-                    ESC_text.text = "Stage = 2\nEvent Count = 2";
-                }
-                if (Stage_count == 3)
-                {
-                    ESC_text.text = "Stage = 3\nEvent Count = 2";
-                }
+                ESC_text.text = "무사히 열쇠를 찾았다.\n\n다시 그래픽 실습실로 돌아가야 한다.";
             }
             if (PL.GetComponent<Player_state>().Event_count >= 3)
             {
-                if (Stage_count == 1)
-                {
-                    ESC_text.text = "Stage = 1\nEvent Count = 3";
-                }
-                if (Stage_count == 2)
-                {
-                    ESC_text.text = "Stage = 2\nEvent Count = 3";
-                }
-                if (Stage_count == 3)
-                {
-                    ESC_text.text = "Stage = 3\nEvent Count = 3";
-                }
+                ESC_text.text = "USB를 찾았다.\n\n빨리 집에 돌아가자.";
             }
         }
         else
