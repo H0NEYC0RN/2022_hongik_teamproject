@@ -57,6 +57,7 @@ public class KEY : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                Obstacle_txt.text = "열쇠를 찾았다. 이제 실습실로 가면된다.";
                 KEY_done = true;
                 KEY_Object.SetActive(false);
                 KEY_UI.SetActive(true);
