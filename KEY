@@ -7,8 +7,11 @@ public class KEY : MonoBehaviour
     [SerializeField] GameObject KEY_Object;
     [SerializeField] GameObject KEY_UI;
     [SerializeField] GameObject State;
+    [SerializeField] GameObject KEYPAD;
 
     public bool KEY_done;
+    public bool KEYPAD_done;
+    private bool isActive;
     private bool isReset;
     private bool isPickup;
     private bool is_invoked;
@@ -20,14 +23,14 @@ public class KEY : MonoBehaviour
 
     void Start()
     {
+        KEY_Object.SetActive(false);
         Setting();
         Reset_check();
-        
-        
     }
 
     void Setting()
     {
+
         Stage_random = Random.Range(1, 4);
 
         if (Stage_random == 1)
@@ -46,6 +49,13 @@ public class KEY : MonoBehaviour
 
     void Update()
     {
+        isActive = KEYPAD.GetComponent<Keypad>().Keypad_done;
+
+        if (isActive == true)
+        {
+            KEY_Object.SetActive(true);
+        }
+
         isReset = State.GetComponent<Player_state>().Reset_ON;
 
         if (isReset == true)
@@ -57,7 +67,6 @@ public class KEY : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Obstacle_txt.text = "열쇠를 찾았다. 이제 실습실로 가면된다.";
                 KEY_done = true;
                 KEY_Object.SetActive(false);
                 KEY_UI.SetActive(true);
@@ -67,9 +76,12 @@ public class KEY : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        if (isActive ==true)
         {
-            isPickup = true;
+            if (other.tag == "Player")
+            {
+                isPickup = true;
+            }
         }
     }
     private void OnTriggerExit(Collider other)
