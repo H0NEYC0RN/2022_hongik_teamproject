@@ -9,35 +9,33 @@ public class Note : MonoBehaviour
     [SerializeField] GameObject Player_State;
     [SerializeField] GameObject Dialogue;
     public GameObject noteCanvas;
+    public bool NOTE_done;
 
-    void Update()
+    private void Start()
     {
-
+        noteCanvas.SetActive(false);
     }
 
     private void OnTriggerStay(Collider other)
     {
-       
 
         Debug.Log(GameObject.Find("Keypad").GetComponent<Keypad>().Stage_random);
+
         if (other.tag == "Player")
         {
-            if(Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 noteCanvas.SetActive(true);
+                NOTE_done = true;
             }
-            //Note_txt.text = "비밀번호";
-           
         }
     }
-
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
             noteCanvas.SetActive(false);
-
         }
     }
 }
