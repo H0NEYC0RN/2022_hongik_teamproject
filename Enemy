@@ -7,17 +7,16 @@ public class Enemy : MonoBehaviour
     // 적 움직임 속도 설정
     [SerializeField] float Enemy_Walk = 1;
     [SerializeField] float Enemy_Run = 2;
-    public bool isChasing;
+    private bool isChasing;
 
     // 경로 이동 관련
-    public bool isPatrol;
-    public bool isdone;
-    public Vector3[] WayPoints;
+    private bool isPatrol;
+    private bool isdone;
+    [SerializeField] Vector3[] WayPoints;
     private Vector3 POS_Now;
     private Vector3 Target_Pos;
-    [SerializeField] Vector3 Pos_offset;
-    public int WayPoint_Index = 0;
-    public int way_check = 0;
+    [SerializeField] int WayPoint_Index = 0;
+    [SerializeField] int way_check = 0;
     public bool way_check_ready = true;
 
     // SFX, 컴포넌트 등
@@ -28,14 +27,13 @@ public class Enemy : MonoBehaviour
 
     // Stage 판별 / Player 상태 파악 등
     [SerializeField] GameObject State;
-    [SerializeField] GameObject Stage;
     public int Stage_count;
-
     public bool isReset = true;
 
     // 시작 위치 (Stage별로 다르게 적용해줘야 함)
     [SerializeField] Vector3 Starting_Point;
 
+    // BGM 1/2 = 평시, 3 = 추격중
     [SerializeField] GameObject Music1;
     [SerializeField] GameObject Music2;
     [SerializeField] GameObject Music3;
@@ -50,32 +48,30 @@ public class Enemy : MonoBehaviour
         WayPoints = new Vector3[4];
         Enemy_Anime = Enemy_CR.GetComponent<Animator>();
 
-        Stage_count = Stage.GetComponent<Stage_Check>().Stage_count;
-
         Music3.SetActive(false);
 
         // Stage별 이동 경로 배열에 값 할당
-        if (Stage_count == 2)
+        if (Stage_count == 3)
         {
 
-            WayPoints.SetValue(new Vector3(-9f, 1.5f, 7.4f), 0); //Way 0 = 순찰 시작 지점까지 이동
-            WayPoints.SetValue(new Vector3(-9f, 1.5f, 7.6f), 1); //Way 1 = 순찰 시작 살짝 앞까지 이동(순찰 시작)
-            WayPoints.SetValue(new Vector3(-9.443f, 1.5f, 12f), 2); //Way 2 = 순찰 지정 지점 살짝 앞까지 이동
-            WayPoints.SetValue(new Vector3(-9f, 1.5f, 12.08f), 3); //Way 3 = 순찰 지정 지점까지 이동
+            WayPoints.SetValue(new Vector3(0f, 0f, 0f), 0); //Way 0 = 순찰 시작 지점까지 이동
+            WayPoints.SetValue(new Vector3(0f, 0f, 0f), 1); //Way 1 = 순찰 시작 살짝 앞까지 이동(순찰 시작)
+            WayPoints.SetValue(new Vector3(0f, 0f, 0f), 2); //Way 2 = 순찰 지정 지점 살짝 앞까지 이동
+            WayPoints.SetValue(new Vector3(0f, 0f, 0f), 3); //Way 3 = 순찰 지정 지점까지 이동
         }
-        if (Stage_count == 3)  //스테이지2 순찰구역(학생회실 앞)
+        if (Stage_count == 2) //스테이지2 순찰구역(학생회실 앞)
         {
-            WayPoints.SetValue(new Vector3(6.25f, 3f, 0.1f), 0);
-            WayPoints.SetValue(new Vector3(6.25f, 3f, 0.1f), 1);
-            WayPoints.SetValue(new Vector3(-3.35f, 3f, 0.1f), 2);
-            WayPoints.SetValue(new Vector3(-3.35f, 3f, 0.1f), 3);
+            WayPoints.SetValue(new Vector3(4.8f, 0f, -5f), 0);
+            WayPoints.SetValue(new Vector3(5f, 0f, -5f), 1);
+            WayPoints.SetValue(new Vector3(4.8f, 0f, 5f), 2);
+            WayPoints.SetValue(new Vector3(5f, 0f, 5f), 3);
         }
-        if (Stage_count == 1)   //a동 실습실 순찰구역
+        if (Stage_count == 1) //a동 실습실 순찰구역
         {
-            WayPoints.SetValue(new Vector3(-5.36f, 4.23f, 8.953f), 0);
-            WayPoints.SetValue(new Vector3(-5.36f, 4.23f, 8.953f), 1);
-            WayPoints.SetValue(new Vector3(-8.597f, 4.23f, 8.953f), 2);
-            WayPoints.SetValue(new Vector3(-8.597f, 4.23f, 8.953f), 3);
+            WayPoints.SetValue(new Vector3(-5f, 0f, 4.8f), 0);
+            WayPoints.SetValue(new Vector3(-5f, 0f, 5f), 1);
+            WayPoints.SetValue(new Vector3(5f, 0f, 4.8f), 2);
+            WayPoints.SetValue(new Vector3(5f, 0, 5f), 3);
         }
     }
 
