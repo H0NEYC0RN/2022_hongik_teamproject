@@ -29,7 +29,6 @@ public class Keypad : MonoBehaviour
     private bool Progress_ON;
     private bool Reset_ON;
 
-
     private void Start()
     {
         Stage_random = Random.Range(1, 5);
@@ -47,6 +46,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "1";
                     A_input = 1;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -54,6 +54,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "2";
                     A_input = 2;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
 
@@ -62,6 +63,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "3";
                     A_input = 3;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -69,6 +71,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "4";
                     A_input = 4;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -76,6 +79,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "5";
                     A_input = 5;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -83,6 +87,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "6";
                     A_input = 6;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -90,6 +95,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "7";
                     A_input = 7;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -97,6 +103,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "8";
                     A_input = 8;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -104,6 +111,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "9";
                     A_input = 9;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -111,6 +119,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_A.text = "0";
                     A_input = 0;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -122,6 +131,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "1";
                     B_input = 1;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -129,6 +139,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "2";
                     B_input = 2;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
 
@@ -137,6 +148,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "3";
                     B_input = 3;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -144,6 +156,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "4";
                     B_input = 4;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -151,6 +164,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "5";
                     B_input = 5;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -158,6 +172,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "6";
                     B_input = 6;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -165,6 +180,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "7";
                     B_input = 7;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -172,6 +188,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "8";
                     B_input = 8;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -179,6 +196,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "9";
                     B_input = 9;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -186,6 +204,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_B.text = "0";
                     B_input = 0;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -197,6 +216,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "1";
                     C_input = 1;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -204,6 +224,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "2";
                     C_input = 2;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
 
@@ -212,6 +233,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "3";
                     C_input = 3;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -219,6 +241,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "4";
                     C_input = 4;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -226,6 +249,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "5";
                     C_input = 5;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -233,6 +257,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "6";
                     C_input = 6;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -240,6 +265,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "7";
                     C_input = 7;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -247,6 +273,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "8";
                     C_input = 8;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -254,6 +281,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "9";
                     C_input = 9;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -261,6 +289,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_C.text = "0";
                     C_input = 0;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -272,6 +301,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "1";
                     D_input = 1;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -279,6 +309,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "2";
                     D_input = 2;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -286,6 +317,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "3";
                     D_input = 3;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -293,6 +325,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "4";
                     D_input = 4;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -300,6 +333,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "5";
                     D_input = 5;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -307,6 +341,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "6";
                     D_input = 6;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -314,6 +349,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "7";
                     D_input = 7;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -321,6 +357,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "8";
                     D_input = 8;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -328,6 +365,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "9";
                     D_input = 9;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -335,6 +373,7 @@ public class Keypad : MonoBehaviour
                 {
                     Pass_D.text = "0";
                     D_input = 0;
+                    SoundManager.instance.PlayEnterPassword();
                     Progress_ON = false;
                     Invoke("Pass_Input", 0.5f);
                 }
@@ -348,6 +387,7 @@ public class Keypad : MonoBehaviour
                     if (A_input == 1 && B_input == 0 && C_input == 0 && D_input == 5)
                     {
                         Keypad_done = true;
+                        SoundManager.instance.PlayDoorOpen();
                         Pass_Hint.text = "올바른 비밀번호입니다.";
                         this.tag = "Event_done";
                     }
@@ -356,6 +396,7 @@ public class Keypad : MonoBehaviour
                         Pass_Progress = 1;
                         Keypad_done = false;
                         Reset_ON = true;
+                        SoundManager.instance.PlayDoorLocked();
                         Pass_Hint.text = "비밀번호가 틀렸습니다. 다시 입력해주세요.";
                         Pass_A.text = "0";
                         Pass_B.text = "0";
@@ -368,6 +409,7 @@ public class Keypad : MonoBehaviour
                     if (A_input == 1 && B_input == 2 && C_input == 2 && D_input == 9)
                     {
                         Keypad_done = true;
+                        SoundManager.instance.PlayDoorOpen();
                         Pass_Hint.text = "올바른 비밀번호입니다.";
                         this.tag = "Event_done";
                     }
@@ -376,6 +418,7 @@ public class Keypad : MonoBehaviour
                         Pass_Progress = 1;
                         Keypad_done = false;
                         Reset_ON = true;
+                        SoundManager.instance.PlayDoorLocked();
                         Pass_Hint.text = "비밀번호가 틀렸습니다. 다시 입력해주세요.";
                         Pass_A.text = "0";
                         Pass_B.text = "0";
@@ -388,6 +431,7 @@ public class Keypad : MonoBehaviour
                     if (A_input == 1 && B_input == 2 && C_input == 1 && D_input == 4)
                     {
                         Keypad_done = true;
+                        SoundManager.instance.PlayDoorOpen();
                         Pass_Hint.text = "올바른 비밀번호입니다.";
                         this.tag = "Event_done";
                     }
@@ -396,6 +440,7 @@ public class Keypad : MonoBehaviour
                         Pass_Progress = 1;
                         Keypad_done = false;
                         Reset_ON = true;
+                        SoundManager.instance.PlayDoorLocked();
                         Pass_Hint.text = "비밀번호가 틀렸습니다. 다시 입력해주세요.";
                         Pass_A.text = "0";
                         Pass_B.text = "0";
@@ -408,6 +453,7 @@ public class Keypad : MonoBehaviour
                     if (A_input == 1 && B_input == 1 && C_input == 0 && D_input == 2)
                     {
                         Keypad_done = true;
+                        SoundManager.instance.PlayDoorOpen();
                         Pass_Hint.text = "올바른 비밀번호입니다.";
                         this.tag = "Event_done";
                     }
@@ -416,12 +462,13 @@ public class Keypad : MonoBehaviour
                         Pass_Progress = 1;
                         Keypad_done = false;
                         Reset_ON = true;
+                        SoundManager.instance.PlayDoorLocked();
                         Pass_Hint.text = "비밀번호가 틀렸습니다. 다시 입력해주세요.";
                         Pass_A.text = "0";
                         Pass_B.text = "0";
                         Pass_C.text = "0";
                         Pass_D.text = "0";
-                    }
+                    } 
                 }
             }
         }
