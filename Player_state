@@ -18,11 +18,15 @@ public class Player_state : MonoBehaviour
 
     //클리어 조건 관련
     public int Event_count = 0;
-    [SerializeField] GameObject USB;
+    [SerializeField] GameObject NOTE;
     [SerializeField] GameObject KEY;
+    [SerializeField] GameObject Keypad;
+    [SerializeField] GameObject USB;
     [SerializeField] GameObject Exit;
-    public bool USB_done;
+    public bool NOTE_done;
     public bool KEY_done;
+    public bool PAD_done;
+    public bool USB_done;
     public bool isExit;
 
     //리셋 및 게임 오버 조건 관련
@@ -51,8 +55,10 @@ public class Player_state : MonoBehaviour
         Hide();
         Hide_check();
 
+        NOTE_done = NOTE.GetComponent<Note>().NOTE_done;
         USB_done = USB.GetComponent<USB>().USB_done;
         KEY_done = KEY.GetComponent<KEY>().KEY_done;
+        PAD_done = Keypad.GetComponent<Keypad>().Keypad_done;
         isExit = Exit.GetComponent<Exit>().isExit;
 
         Event_check();
@@ -62,9 +68,16 @@ public class Player_state : MonoBehaviour
     {
         if (KEY_done ==true)
         {
-            if (USB_done == true)
+            if (PAD_done == true)
             {
-                Event_count = 2;
+                if (USB_done == true)
+                {
+                    Event_count = 3;
+                }
+                else
+                {
+                    Event_count = 2;
+                }
             }
             else
             {
@@ -193,6 +206,12 @@ public class Player_state : MonoBehaviour
             Dialogue.SetActive(true);
             Obstacle_txt.text = "E키를 눌러 상호작용 할 수 있다.";
         }
+        if (other.tag == "Event_done")
+        {
+            Event_ON.SetActive(true);
+            Dialogue.SetActive(true);
+            Obstacle_txt.text = "이미 해제했다. 더 이상 볼일은 없다.";
+        }
         if (other.tag == "Hide_Object")
         {
             Hide_ready = true;
@@ -219,6 +238,12 @@ public class Player_state : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Event")
+        {
+            Event_ON.SetActive(false);
+            Dialogue.SetActive(false);
+            Obstacle_txt.text = "";
+        }
+        if (other.tag == "Event_done")
         {
             Event_ON.SetActive(false);
             Dialogue.SetActive(false);
