@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
             WayPoints.SetValue(new Vector3(-9.443f, 1.5f, 12f), 2); //Way 2 = 순찰 지정 지점 살짝 앞까지 이동
             WayPoints.SetValue(new Vector3(-9f, 1.5f, 12.08f), 3); //Way 3 = 순찰 지정 지점까지 이동
         }
-        if (Stage_count ==3)            //스테이지2 순찰구역(학생회실 앞)
+        if (Stage_count == 3)  //스테이지2 순찰구역(학생회실 앞)
         {
             WayPoints.SetValue(new Vector3(6.25f, 3f, 0.1f), 0);
             WayPoints.SetValue(new Vector3(6.25f, 3f, 0.1f), 1);
@@ -271,6 +271,9 @@ public class Enemy : MonoBehaviour
             isChasing = false;
             Walk_sfx.SetActive(true);
             Run_sfx.SetActive(false);
+            Music1.SetActive(true);
+            Music2.SetActive(true);
+            Music3.SetActive(false);
         }
     }
 }
