@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KEY : MonoBehaviour
 {
     [SerializeField] GameObject KEY_Object;
     [SerializeField] GameObject KEY_UI;
     [SerializeField] GameObject State;
+    [SerializeField] Text Obstacle_txt;
 
     public bool KEY_done;
     private bool isReset;
@@ -56,6 +58,7 @@ public class KEY : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
+                Obstacle_txt.text = "열쇠를 찾았다. 이제 실습실로 가면된다.";
                 KEY_done = true;
                 KEY_Object.SetActive(false);
                 KEY_UI.SetActive(true);
