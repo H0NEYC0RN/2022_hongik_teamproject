@@ -36,6 +36,10 @@ public class Enemy : MonoBehaviour
     // 시작 위치 (Stage별로 다르게 적용해줘야 함)
     [SerializeField] Vector3 Starting_Point;
 
+    [SerializeField] GameObject Music1;
+    [SerializeField] GameObject Music2;
+    [SerializeField] GameObject Music3;
+
 
 
 
@@ -48,27 +52,30 @@ public class Enemy : MonoBehaviour
 
         Stage_count = Stage.GetComponent<Stage_Check>().Stage_count;
 
+        Music3.SetActive(false);
+
         // Stage별 이동 경로 배열에 값 할당
-        if (Stage_count == 1)
-        {
-            WayPoints.SetValue(new Vector3(3.75f, 0, 4.2f), 0);
-            WayPoints.SetValue(new Vector3(3.5f, 0, 4.2f), 1);
-            WayPoints.SetValue(new Vector3(-3.4f, 0, 4.2f), 2);
-            WayPoints.SetValue(new Vector3(-3.45f, 0, 4.2f), 3);
-        }
         if (Stage_count == 2)
         {
-            WayPoints.SetValue(new Vector3(0, 0, 0), 0);
-            WayPoints.SetValue(new Vector3(0, 0, 0), 1);
-            WayPoints.SetValue(new Vector3(0, 0, 0), 2);
-            WayPoints.SetValue(new Vector3(0, 0, 0), 3);
+
+            WayPoints.SetValue(new Vector3(-9f, 1.5f, 7.4f), 0); //Way 0 = 순찰 시작 지점까지 이동
+            WayPoints.SetValue(new Vector3(-9f, 1.5f, 7.6f), 1); //Way 1 = 순찰 시작 살짝 앞까지 이동(순찰 시작)
+            WayPoints.SetValue(new Vector3(-9.443f, 1.5f, 12f), 2); //Way 2 = 순찰 지정 지점 살짝 앞까지 이동
+            WayPoints.SetValue(new Vector3(-9f, 1.5f, 12.08f), 3); //Way 3 = 순찰 지정 지점까지 이동
         }
-        if (Stage_count == 3)
+        if (Stage_count ==3)            //스테이지2 순찰구역(학생회실 앞)
         {
-            WayPoints.SetValue(new Vector3(0, 0, 0), 0);
-            WayPoints.SetValue(new Vector3(0, 0, 0), 1);
-            WayPoints.SetValue(new Vector3(0, 0, 0), 2);
-            WayPoints.SetValue(new Vector3(0, 0, 0), 3);
+            WayPoints.SetValue(new Vector3(6.25f, 3f, 0.1f), 0);
+            WayPoints.SetValue(new Vector3(6.25f, 3f, 0.1f), 1);
+            WayPoints.SetValue(new Vector3(-3.35f, 3f, 0.1f), 2);
+            WayPoints.SetValue(new Vector3(-3.35f, 3f, 0.1f), 3);
+        }
+        if (Stage_count == 1)   //a동 실습실 순찰구역
+        {
+            WayPoints.SetValue(new Vector3(-5.36f, 4.23f, 8.953f), 0);
+            WayPoints.SetValue(new Vector3(-5.36f, 4.23f, 8.953f), 1);
+            WayPoints.SetValue(new Vector3(-8.597f, 4.23f, 8.953f), 2);
+            WayPoints.SetValue(new Vector3(-8.597f, 4.23f, 8.953f), 3);
         }
     }
 
@@ -239,6 +246,9 @@ public class Enemy : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(this.transform.position, Target_Pos, Enemy_Run * Time.deltaTime);
             Walk_sfx.SetActive(false);
             Run_sfx.SetActive(true);
+            Music1.SetActive(false);
+            Music2.SetActive(false);
+            Music3.SetActive(true);
         }
         // Player가 탐사범위 안에서 Hide 상태가 되었을 때, 추격을 멈춤
         if (other.tag == "Hided")
@@ -247,6 +257,9 @@ public class Enemy : MonoBehaviour
             isChasing = false;
             Walk_sfx.SetActive(true);
             Run_sfx.SetActive(false);
+            Music1.SetActive(true);
+            Music2.SetActive(true);
+            Music3.SetActive(false);
         }
     }
 
