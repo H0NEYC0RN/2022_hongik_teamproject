@@ -87,6 +87,7 @@ public class Player_state : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.E))
                 {
                     isHided = true;
+                    SoundManager.instance.PlayHideEnter();
                     FadeIN();
                 }
             }
@@ -95,6 +96,7 @@ public class Player_state : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.E))
                 {
                     isHided = false;
+                    SoundManager.instance.PlayHideEscape();
                     FadeOUT();
                 }
             }
